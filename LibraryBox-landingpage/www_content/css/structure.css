@@ -1,3 +1,17 @@
+html {
+    height: 100%;
+}
+
+body {
+    /*padding-bottom: 134px;*/
+    height: 100%;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
 #header {
     color: #f8f8f8;
 }
@@ -155,8 +169,13 @@ textarea:first-child {
 #footer {
     background: #9d2235;
     border-top: 1px solid #922e0f;
-    margin: 2em 0 0 0;
+    /*margin: 2em 0 0 0;*/
     padding: 0 0 1em;
+    margin: 0 0 0 0;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
 }
 
 #footer .to-top {
