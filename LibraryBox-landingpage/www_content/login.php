@@ -15,7 +15,8 @@ if($requestMethod === "POST") {
     $isValid = false;
 
     $username = $_POST['username'];
-    $password = $_POST['password'];
+    $plain_password = $_POST['password'];
+    $password = sha1($plain_password);
 
     foreach($users as $user) {
         if(($user["username"] === $username) && ($user["password"] === $password)) {

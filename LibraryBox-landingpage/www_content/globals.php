@@ -6,7 +6,8 @@ if(!isset($GLOBALS["users"])) {
 
     if(!file_exists("users.txt")) {
         $file=fopen("users.txt","w");
-        fwrite($file, "1234567890,admin,adminpass,1,1,021222324252");
+        $pass = sha1("adminpass");
+        fwrite($file, "1234567890,admin,$pass,1,1,021222324252");
         fclose($file);
     }
 
@@ -77,16 +78,18 @@ function makePermissionStr($arr) {
     return $permissions;
 }
 
-function addUser($username, $password, $admin, $folders, $permissions_arr) {
+function addUser($username, $plain_password, $admin, $folders, $permissions_arr) {
     $username = cleanStr($username);
-    $password = cleanStr($password);
+    $plain_password = cleanStr($plain_password);
     $id = uuid();
 
     $permissions = makePermissionStr($permissions_arr);
 
-    if((strlen($username) === 0) || (strlen($password) === 0)) {
+    if((strlen($username) === 0) || (strlen($plain_password) === 0)) {
         return false;
     }
+
+    $password = sha1($plain_password);
 
     $users = getUsers();
     foreach($users as $user) {
@@ -106,8 +109,6 @@ function addUser($username, $password, $admin, $folders, $permissions_arr) {
     }
     fclose($file);
 
-
-
     $GLOBALS["users"][count($GLOBALS["users"])] = array(
         "id" => $id,
         "username" => $username,
@@ -121,7 +122,7 @@ function addUser($username, $password, $admin, $folders, $permissions_arr) {
 
 }
 
-function editUser($id = "", $username = "", $password = "", $admin = -1, $folders = -1, $permissions_arr = array()) {
+function editUser($id = "", $username = "", $plain_password = "", $admin = -1, $folders = -1, $permissions_arr = array()) {
     if(!loggedIn()) {
         return false;
     }
@@ -130,7 +131,7 @@ function editUser($id = "", $username = "", $password = "", $admin = -1, $folder
     $folders = (int)$folders;
 
     $username = cleanStr($username);
-    $password = cleanStr($password);
+    $plain_password = cleanStr($plain_password);
     $id = cleanStr($id);
 
     if(strlen($id) === 0) {
@@ -145,7 +146,7 @@ function editUser($id = "", $username = "", $password = "", $admin = -1, $folder
     $user = $userArr[0];
 
     $username = (strlen($username) > 0) ? $username : $user["username"];
-    $password = (strlen($password) > 0) ? $password : $user["password"];
+    $password = (strlen($plain_password) > 0) ? sha1($plain_password) : $user["password"];
     $admin = ($admin > -1) ? $admin : $user["admin"];
     $folders = ($folders > -1) ? $folders : $user["folders"];
     $permissions = count($permissions_arr) > 0 ? $permissions_arr : $user["permissions"];

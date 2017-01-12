@@ -99,7 +99,7 @@ include("header.php");
 
 <div class="container">
     <div class="row">
-        <div class="col-sm-6 col-lg-4">
+        <div class="col-sm-7 col-lg-5">
             <form action='<?php print "edituser.php?id=" . $id; ?>' method='post'>
                 <?php
                     if($status === 1) {
