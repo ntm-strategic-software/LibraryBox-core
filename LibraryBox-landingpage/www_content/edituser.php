@@ -10,6 +10,7 @@ if(strlen($id) === 0) {
 }
 
 $current_user = getUser()[0];
+// print $current_user;
 
 $requestMethod = $_SERVER["REQUEST_METHOD"];
 
@@ -22,20 +23,25 @@ $permissions;
 if($requestMethod === "POST") {
     $posted_username = $_POST['editedusername'];
     $posted_password = $_POST['editedpassword'];
-    $is_admin = $_POST['admin'];
-    $can_create_folders = $_POST['folders'];
-
-    $posted_permissions = array();
-    for($i = 0; $i < 6; $i++) {
-        $posted_permissions[$i] = $_POST["folder-" . $i];
-    }
 
     // print count($posted_permissions);
     // foreach($posted_permissions as $p) {
     //     print $p;
     // }
     
-    $success = editUser($id, $posted_username, $posted_password, $is_admin, $can_create_folders, $posted_permissions);
+    if($current_user["admin"] === 1) {
+        $is_admin = $_POST['admin'];
+        $can_create_folders = $_POST['folders'];
+
+        $posted_permissions = array();
+        for($i = 0; $i < 6; $i++) {
+            $posted_permissions[$i] = $_POST["folder-" . $i];
+        }
+        $success = editUser($id, $posted_username, $posted_password, $is_admin, $can_create_folders, $posted_permissions);
+    } else {
+        $success = editUser($id, $posted_username, $posted_password);
+    }
+    
     
     if($success) {
         $status = 2;

@@ -95,6 +95,9 @@ function addUser($username, $password, $admin, $folders, $permissions_arr) {
         }
     }
 
+    $admin = (int)$admin;
+    $folders = (int)$folders;
+
     $fileContents = file("users.txt");
     $fileContents[count($fileContents)] = $id . "," . $username . "," . $password . "," . $admin . "," . $folders . "," . $permissions;
     $file = fopen("users.txt", "w");
@@ -102,6 +105,8 @@ function addUser($username, $password, $admin, $folders, $permissions_arr) {
         fwrite($file, trim($userStr) . "\n");
     }
     fclose($file);
+
+
 
     $GLOBALS["users"][count($GLOBALS["users"])] = array(
         "id" => $id,
@@ -116,17 +121,17 @@ function addUser($username, $password, $admin, $folders, $permissions_arr) {
 
 }
 
-function editUser($id = "", $username = "", $password = "", $admin, $folders, $permissions_arr) {
+function editUser($id = "", $username = "", $password = "", $admin = -1, $folders = -1, $permissions_arr = array()) {
     if(!loggedIn()) {
         return false;
     }
 
+    $admin = (int)$admin;
+    $folders = (int)$folders;
+
     $username = cleanStr($username);
     $password = cleanStr($password);
     $id = cleanStr($id);
-    $permissions = $permissions_arr;
-
-    // print $permissions;
 
     if(strlen($id) === 0) {
         return false;
@@ -141,6 +146,9 @@ function editUser($id = "", $username = "", $password = "", $admin, $folders, $p
 
     $username = (strlen($username) > 0) ? $username : $user["username"];
     $password = (strlen($password) > 0) ? $password : $user["password"];
+    $admin = ($admin > -1) ? $admin : $user["admin"];
+    $folders = ($folders > -1) ? $folders : $user["folders"];
+    $permissions = count($permissions_arr) > 0 ? $permissions_arr : $user["permissions"];
 
     $users = getUsers();
 
