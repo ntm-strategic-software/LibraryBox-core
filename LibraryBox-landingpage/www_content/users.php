@@ -1,11 +1,34 @@
 <?php
     include("globals.php");
+
+    $requestMethod = $_SERVER["REQUEST_METHOD"];
+
+    if($requestMethod === "POST") {
+        $username = $_POST['newusername'];
+        $password = $_POST['newpassword'];
+        $is_admin = $_POST['admin'];
+        $can_create_folders = $_POST['folders'];
+
+        $permissions = array();
+        for($i = 0; $i < 6; $i++) {
+            $permissions[$i] = $_POST["folder-" . $i];
+        }
+
+        $success = addUser($username, $password, $is_admin, $can_create_folders, $permissions);
+
+        if($success) {
+            redirect("/users.php");
+        }
+
+    }
+
     $users = getUsers();
     $userListItems = array();
     foreach($users as $user) {
         $idx = count($userListItems);
         $adminData = ($user["admin"] === 0) ? "<td class='text-danger'>No</td>" : "<td class='text-success'>Yes</td>";
-        $userListItems[$idx] = "<tr><td><a href='edituser.php?id=" . $user["id"] . "'>" . $user["username"] . "</a></td><td>" . $user["password"] . "</td>" . $adminData . "</tr>";
+        $folders_data = ($user["folders"] === 0) ? "<td class='text-danger'>No</td>" : "<td class='text-success'>Yes</td>";
+        $userListItems[$idx] = "<tr><td><a href='edituser.php?id=" . $user["id"] . "'>" . $user["username"] . "</a></td><td>" . $user["password"] . "</td>" . $adminData . "</td></td>" . $folders_data . "</tr>";
     }
 
     $status = 0;
@@ -38,6 +61,7 @@
                         <th>Username</th>
                         <th>Password</th>
                         <th>Admin</th>
+                        <th>Edit Folders</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,7 +79,7 @@
                     <h3 class="panel-title" style='font-family:"Helvetiva Neue", Helvetica, Arial, sans-serif;'>Add New User</h3>
                 </div>
                 <div class="panel-body">
-                    <form action='adduser.php' method='post'>
+                    <form action='users.php' method='post'>
                         <?php 
                             if($status === 1) {
                                 print "<p>There was a problem adding the user.</p>";
@@ -78,7 +102,7 @@
                         </div>
                         <div class="form-group">
                             <label>Can create & delete folders?</label>
-                            <select class="form-control" name="admin">
+                            <select class="form-control" name="folders">
                                 <option value="1">Yes</option>
                                 <option value="0" selected>No</option>
                             </select>

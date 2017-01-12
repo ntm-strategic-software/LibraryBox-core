@@ -6,7 +6,7 @@ if(!isset($GLOBALS["users"])) {
 
     if(!file_exists("users.txt")) {
         $file=fopen("users.txt","w");
-        fwrite($file, "1234567890,admin,adminpass,1,021222324252");
+        fwrite($file, "1234567890,admin,adminpass,1,1,021222324252");
         fclose($file);
     }
 
@@ -26,7 +26,8 @@ if(!isset($GLOBALS["users"])) {
                 "username" => isset($userArr[1]) ? $userArr[1] : "",
                 "password" => isset($userArr[2]) ? $userArr[2] : "",
                 "admin" => isset($userArr[3]) ? (int)$userArr[3] : 0,
-                "permissions" => isset($userArr[4]) ? permissionsHash($userArr[4]) : []
+                "folders" => isset($userArr[4]) ? (int)$userArr[4] : 0,
+                "permissions" => isset($userArr[5]) ? permissionsHash($userArr[5]) : []
             );
             $count = count($users);
         }
@@ -67,12 +68,21 @@ function cleanStr($str) {
     return str_replace(",", "", $str);
 }
 
-function addUser($username, $password) {
+function makePermissionStr($arr) {
+    $permissions = "";
+    for($i = 0; $i < count($arr); $i++) {
+        $permission = $arr[$i];
+        $permissions = $permissions . $i . $permission;
+    }
+    return $permissions;
+}
+
+function addUser($username, $password, $admin, $folders, $permissions_arr) {
     $username = cleanStr($username);
     $password = cleanStr($password);
-    $admin = 0;
-    $permissions = "021220314150";
     $id = uuid();
+
+    $permissions = makePermissionStr($permissions_arr);
 
     if((strlen($username) === 0) || (strlen($password) === 0)) {
         return false;
@@ -86,7 +96,7 @@ function addUser($username, $password) {
     }
 
     $fileContents = file("users.txt");
-    $fileContents[count($fileContents)] = $id . "," . $username . "," . $password . "," . $admin . "," . $permissions;
+    $fileContents[count($fileContents)] = $id . "," . $username . "," . $password . "," . $admin . "," . $folders . "," . $permissions;
     $file = fopen("users.txt", "w");
     foreach($fileContents as $userStr) {
         fwrite($file, trim($userStr) . "\n");
@@ -98,6 +108,7 @@ function addUser($username, $password) {
         "username" => $username,
         "password" => $password,
         "admin" => $admin,
+        "folders" => $folders,
         "permissions" => permissionsHash($permissions)
     );
 
@@ -105,18 +116,17 @@ function addUser($username, $password) {
 
 }
 
-function editUser($id = "", $username = "", $password = "") {
+function editUser($id = "", $username = "", $password = "", $admin, $folders, $permissions_arr) {
     if(!loggedIn()) {
         return false;
     }
 
-    // $currentUser = getUser()[0];
-
     $username = cleanStr($username);
     $password = cleanStr($password);
     $id = cleanStr($id);
-    $admin = 0;
-    $permissions = "021220314150";
+    $permissions = $permissions_arr;
+
+    // print $permissions;
 
     if(strlen($id) === 0) {
         return false;
@@ -146,6 +156,7 @@ function editUser($id = "", $username = "", $password = "") {
             $users[$i]["username"] = $username;
             $users[$i]["password"] = $password;
             $users[$i]["admin"] = $admin;
+            $users[$i]["folders"] = $folders;
             $users[$i]["permissions"] = $permissions;
             break;
         }
@@ -154,7 +165,7 @@ function editUser($id = "", $username = "", $password = "") {
     $GLOBALS["users"] = $users;
     $file = fopen("users.txt", "w");
     foreach($users as $u) {
-        $userStr = $u["id"] . "," . $u["username"] . "," . $u["password"] . "," . $admin . "," . $permissions;
+        $userStr = $u["id"] . "," . $u["username"] . "," . $u["password"] . "," . $u["admin"] . "," . $u["folders"] . "," . makePermissionStr($u["permissions"]);
         fwrite($file, $userStr . "\n");
     }
     fclose($file);

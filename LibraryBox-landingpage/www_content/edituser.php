@@ -13,14 +13,27 @@ $requestMethod = $_SERVER["REQUEST_METHOD"];
 
 $username;
 $password;
+$admin;
+$edit_folders;
+$permissions;
 
 if($requestMethod === "POST") {
-    $username = $_POST['editedusername'];
-    $password = $_POST['editedpassword'];
+    $posted_username = $_POST['editedusername'];
+    $posted_password = $_POST['editedpassword'];
+    $is_admin = $_POST['admin'];
+    $can_create_folders = $_POST['folders'];
+
+    $posted_permissions = array();
+    for($i = 0; $i < 6; $i++) {
+        $posted_permissions[$i] = $_POST["folder-" . $i];
+    }
+
+    // print count($posted_permissions);
+    // foreach($posted_permissions as $p) {
+    //     print $p;
+    // }
     
-    print "id: " . $id;
-    
-    $success = editUser($id, $username, $password);
+    $success = editUser($id, $posted_username, $posted_password, $is_admin, $can_create_folders, $posted_permissions);
     
     if($success) {
         $status = 2;
@@ -31,13 +44,45 @@ if($requestMethod === "POST") {
 }
 
 $user = getUser($id);
-    if(count($user > 0) && ($user[0]["id"] === $id)) {
-        $username = $user[0]['username'];
-        $password = $user[0]['password'];
+if(count($user > 0) && ($user[0]["id"] === $id)) {
+    $username = $user[0]['username'];
+    $password = $user[0]['password'];
+    $admin = $user[0]['admin'];
+    $edit_folders = $user[0]['folders'];
+    $permissions = $user[0]['permissions'];
+} else {
+    http_response_code(404);
+    die();
+}
+
+$permission_selects = array();
+$folders = getFolderNames();
+for($i = 0; $i < count($folders); $i++) {
+    $name = $folders[$i];
+    $inputName = "folder-" . $i;
+    $permission = $permissions[$i];
+    // print $permission;
+    $options = "";
+    if($permission === 2) {
+        $options = "<option value='0'>None</option>
+            <option value='1'>Read</option>
+            <option value='2' selected>Write</option>";
+    } else if($permission === 1) {
+        $options = "<option value='0'>None</option>
+            <option value='1' selected>Read</option>
+            <option value='2'>Write</option>";
     } else {
-        http_response_code(404);
-        die();
+        $options = "<option value='0' selected>None</option>
+            <option value='1'>Read</option>
+            <option value='2'>Write</option>";
     }
+    $permission_selects[$i] = "<div class='form-group'>
+            <label>$name</label>
+            <select class='form-control input-sm' name='$inputName'>
+                $options
+            </select>
+        </div>";
+}
 
 include("head.php");
 include("header.php");
@@ -65,6 +110,44 @@ include("header.php");
                 <div class="form-group">
                     <label data-l10n-id="loginFormPassword">Password</label>
                     <input class="form-control" type='password' name='editedpassword' value="" placeholder="enter new password"></input>
+                </div>
+                <div class="form-group">
+                    <label>Admin?</label>
+                    <select class="form-control" name="admin">
+                        <?php
+                            if($admin === 1) {
+                                print '<option value="1" selected>Yes</option>';
+                                print '<option value="0">No</option>';
+                            } else {
+                                print '<option value="1">Yes</option>';
+                                print '<option value="0" selected>No</option>';
+                            }
+                        ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Can create & delete folders?</label>
+                    <select class="form-control" name="folders">
+                        <?php
+                            if($edit_folders === 1) {
+                                print '<option value="1" selected>Yes</option>';
+                                print '<option value="0">No</option>';
+                            } else {
+                                print '<option value="1">Yes</option>';
+                                print '<option value="0" selected>No</option>';
+                            }
+                        ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Group Permissions</label>
+                    <div class="well well-sm">
+                        <?php
+                            foreach($permission_selects as $permission_select) {
+                                print $permission_select;
+                            }
+                        ?>
+                    </div>
                 </div>
                 <div class="form-group">
                     <button type='submit' class="btn btn-primary"><i class="fa fa-refresh"></i> <span data-l10n-id="editUserSaveChanges">Save Changes</span></button>
