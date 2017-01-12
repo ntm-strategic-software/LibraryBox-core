@@ -36,7 +36,9 @@ if(loggedIn()) {
                 <?php
                     if(loggedIn()) {
                         print '<li><a href="edituser.php?id=' . $user["id"] . '"><i class="fa fa-cog"></i> <span data-l10n-id="commonNavbarSettings">Settings</span></a></li>';
-                        print '<li><a href="/users.php"><i class="fa fa-users"></i> <span data-l10n-id="commonNavbarUsers">Users</span></a></li>';
+                        if($user["admin"] === 1) {
+                            print  '<li><a href="/users.php"><i class="fa fa-users"></i> <span data-l10n-id="commonNavbarUsers">Users</span></a></li>';
+                        }
                         print '<li><a href="/logout.php"><i class="fa fa-sign-in"></i> <span data-l10n-id="commonNavbarLogout">Logout</span></a></li>';
                     } else {
                         print '<li><a href="/login.php"><i class="fa fa-sign-in"></i> <span data-l10n-id="commonNavbarLogin">Login</span></a></li>';

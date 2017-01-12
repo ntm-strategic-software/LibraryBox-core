@@ -9,6 +9,8 @@ if(strlen($id) === 0) {
     die();
 }
 
+$current_user = getUser()[0];
+
 $requestMethod = $_SERVER["REQUEST_METHOD"];
 
 $username;
@@ -111,44 +113,44 @@ include("header.php");
                     <label data-l10n-id="loginFormPassword">Password</label>
                     <input class="form-control" type='password' name='editedpassword' value="" placeholder="enter new password"></input>
                 </div>
-                <div class="form-group">
-                    <label>Admin?</label>
-                    <select class="form-control" name="admin">
-                        <?php
-                            if($admin === 1) {
-                                print '<option value="1" selected>Yes</option>';
-                                print '<option value="0">No</option>';
-                            } else {
-                                print '<option value="1">Yes</option>';
-                                print '<option value="0" selected>No</option>';
-                            }
-                        ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Can create & delete folders?</label>
-                    <select class="form-control" name="folders">
-                        <?php
-                            if($edit_folders === 1) {
-                                print '<option value="1" selected>Yes</option>';
-                                print '<option value="0">No</option>';
-                            } else {
-                                print '<option value="1">Yes</option>';
-                                print '<option value="0" selected>No</option>';
-                            }
-                        ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Group Permissions</label>
-                    <div class="well well-sm">
-                        <?php
-                            foreach($permission_selects as $permission_select) {
-                                print $permission_select;
-                            }
-                        ?>
-                    </div>
-                </div>
+                <?php
+                    if($current_user["admin"] === 1) {
+
+                        $admin_options;
+                        if($admin === 1) {
+                            $admin_options = '<option value="1" selected>Yes</option>' . '<option value="0">No</option>';
+                        } else {
+                            $admin_options = '<option value="1">Yes</option>' . '<option value="0" selected>No</option>';
+                        }
+                        print "<div class='form-group'>
+                            <label>Admin?</label>
+                                <select class='form-control' name='admin'>
+                                    $admin_options
+                                </select>
+                            </div>";
+                        
+                        $folder_options;
+                        if($edit_folders === 1) {
+                            $folder_options = '<option value="1" selected>Yes</option>' . '<option value="0">No</option>';
+                        } else {
+                            $folder_options = '<option value="1">Yes</option>' . '<option value="0" selected>No</option>';
+                        }
+                        print "<div class='form-group'>
+                                <label>Can create & delete folders?</label>
+                                <select class='form-control' name='folders'>
+                                    $folder_options
+                                </select>
+                            </div>";
+                        
+                        print "<div class='form-group'>
+                            <label>Group Permissions</label>
+                            <div class='well well-sm'>";
+                        foreach($permission_selects as $permission_select) {
+                            print $permission_select;
+                        }
+                        print "</div></div>";
+                    }
+                ?>
                 <div class="form-group">
                     <button type='submit' class="btn btn-primary"><i class="fa fa-refresh"></i> <span data-l10n-id="editUserSaveChanges">Save Changes</span></button>
                 </div>

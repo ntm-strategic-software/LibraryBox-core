@@ -24,11 +24,11 @@
 
     $users = getUsers();
     $userListItems = array();
-    foreach($users as $user) {
+    foreach($users as $u) {
         $idx = count($userListItems);
-        $adminData = ($user["admin"] === 0) ? "<td class='text-danger'>No</td>" : "<td class='text-success'>Yes</td>";
-        $folders_data = ($user["folders"] === 0) ? "<td class='text-danger'>No</td>" : "<td class='text-success'>Yes</td>";
-        $userListItems[$idx] = "<tr><td><a href='edituser.php?id=" . $user["id"] . "'>" . $user["username"] . "</a></td><td>" . $user["password"] . "</td>" . $adminData . "</td></td>" . $folders_data . "</tr>";
+        $adminData = ($u["admin"] === 0) ? "<td class='text-danger'>No</td>" : "<td class='text-success'>Yes</td>";
+        $folders_data = ($u["folders"] === 0) ? "<td class='text-danger'>No</td>" : "<td class='text-success'>Yes</td>";
+        $userListItems[$idx] = "<tr><td><a href='edituser.php?id=" . $u["id"] . "'>" . $u["username"] . "</a></td><td>" . $u["password"] . "</td>" . $adminData . "</td></td>" . $folders_data . "</tr>";
     }
 
     $status = 0;
