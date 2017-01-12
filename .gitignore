@@ -3,3 +3,4 @@ build_dir/*
 librarybox_*.tar.gz
 librarybox
 /node_modules/
+/LibraryBox-landingpage/www_content/users.txt

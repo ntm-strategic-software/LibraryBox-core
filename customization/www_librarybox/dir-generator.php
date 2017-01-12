@@ -445,7 +445,7 @@ if ($display_readme)
 	}
 }
 
-print "<div class='foot'>LibraryBox v2.1 </div>
+print "<div class='foot'>Scatterbox </div>
 	</body>
 	</html>";
 
