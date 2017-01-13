@@ -17,7 +17,7 @@
         $success = addUser($username, $password, $is_admin, $can_create_folders, $permissions);
 
         if($success) {
-            redirect("/users.php");
+            redirect("/content/users.php");
         }
 
     }
@@ -34,7 +34,7 @@
     $status = 0;
 
     $permission_selects = array();
-    $folders = getFolderNames();
+    $folders = getGroupNames();
     for($i = 0; $i < count($folders); $i++) {
         $name = $folders[$i];
         $inputName = "folder-" . $i;
@@ -53,6 +53,11 @@
 ?>
 
 <div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>User Management</h2>
+        </div>
+    </div>
     <div class="row">
         <div class="col-sm-12">
             <table class="table table-bordered table-hover">
@@ -78,7 +83,7 @@
                     <h3 class="panel-title" style='font-family:"Helvetiva Neue", Helvetica, Arial, sans-serif;'>Add New User</h3>
                 </div>
                 <div class="panel-body">
-                    <form action='users.php' method='post'>
+                    <form action='/content/users.php' method='post'>
                         <?php 
                             if($status === 1) {
                                 print "<p>There was a problem adding the user.</p>";

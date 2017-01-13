@@ -45,6 +45,8 @@ if($requestMethod === "POST") {
     
     if($success) {
         $status = 2;
+        redirect('/content/users.php');
+        die();
     } else {
         $status = 1;
     }
@@ -64,7 +66,7 @@ if(count($user > 0) && ($user[0]["id"] === $id)) {
 }
 
 $permission_selects = array();
-$folders = getFolderNames();
+$folders = getGroupNames();
 for($i = 0; $i < count($folders); $i++) {
     $name = $folders[$i];
     $inputName = "folder-" . $i;
@@ -100,7 +102,7 @@ include("header.php");
 <div class="container">
     <div class="row">
         <div class="col-sm-7 col-lg-5">
-            <form action='<?php print "edituser.php?id=" . $id; ?>' method='post'>
+            <form action='<?php print "/content/edituser.php?id=" . $id; ?>' method='post'>
                 <?php
                     if($status === 1) {
                         print '<div class="alert alert-danger" data-l10n-id="editUserProblem">There was a problem editing the user data.</div>';

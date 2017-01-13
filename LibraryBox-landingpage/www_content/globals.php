@@ -11,6 +11,13 @@ if(!isset($GLOBALS["users"])) {
         fclose($file);
     }
 
+    if(!file_exists("groups.json")) {
+        $file=fopen("groups.json","w");
+        $names = array("1", "2", "3", "4", "5", "6");
+        fwrite($file, json_encode($names));
+        fclose($file);
+    }
+
     $users = array();
 
     // print "It is not yet set!";
@@ -232,12 +239,35 @@ function redirect($path) {
     die();
 }
 
-function getFolderNames() {
-    $names = array();
-    for($i = 0; $i < 6; $i++) {
-        $names[$i] = $i + 1;
-    }
+function getGroupNames() {
+    $file_contents_arr = file("groups.json");
+    $file_contents = implode($file_contents_arr);
+    $file_contents = trim($file_contents);
+    $names = json_decode($file_contents);
     return $names;
+}
+
+function saveGroupNames($arr) {
+
+    if(count($arr) != 6) {
+        return false;
+    }
+
+    for($i = 0; $i < count($arr); $i++) {
+        $name = cleanStr($arr[$i]);
+        if(strlen($name) === 0) {
+            $names[$i] = (string)($i + 1);
+        } else {
+            $names[$i] = $name;
+        }
+    }
+
+    $encoded_names = json_encode($names);
+    $file = fopen("groups.json", "w");
+    fwrite($file, $encoded_names);
+    fclose($file);
+
+    return true;
 }
 
 ?>

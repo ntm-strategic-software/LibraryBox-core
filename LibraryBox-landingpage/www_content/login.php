@@ -1,8 +1,6 @@
 <?php
 
 include("globals.php");
-include("head.php");
-include("header.php");
 
 $requestMethod = $_SERVER["REQUEST_METHOD"];
 
@@ -29,24 +27,27 @@ if($requestMethod === "POST") {
     }
 
     if($isValid) {
-        redirect("/");
+        redirect("/content");
     }
 
 } else {
 
     $userArr = getUser();
     if(loggedIn()) {
-        redirect("/");
+        redirect("/content");
     }
 
 }
+
+include("head.php");
+include("header.php");
 
 ?>
 
   <div class="container">
     <div class="row">
       <div class="col-sm-6 col-sm-offset-3 col-lg-4 col-lg-offset-4">
-        <form action='login.php' method='post'>
+        <form action='/content/login.php' method='post'>
           <?php
             if(!$isValid) {
               print '<div class="alert alert-danger">Invalid Username or Password</div>';
@@ -62,7 +63,7 @@ if($requestMethod === "POST") {
               <input type='password' class="form-control" name='password'></input>
             </div>
             <div class="form-group">
-              <button type='submit' class="btn btn-primary"><span class="glyphicon glyphicon-send"></span> <span data-l10n-id="loginFormSubmit">Submit</span></button>
+              <button type='submit' class="btn btn-primary"><i class="fa fa-paper-plane"></i> <span data-l10n-id="loginFormSubmit">Submit</span></button>
             </div>
         </form>
       </div>
