@@ -45,6 +45,14 @@ $VERSION = '1.2';
  *
  */
 
+include('/mnt/usb/LibraryBox/Content/globals.php');
+$user;
+if(loggedIn()) {
+	$user = getUser()[0];
+} else {
+	$user = array();
+}
+
 $show_hidden_files = true;
 $calculate_folder_size = false;
 $display_header = true;
