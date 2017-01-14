@@ -7,8 +7,8 @@ module.exports = grunt => {
                 options: {
                     base: './temp',
                     keepalive: true,
-                    port: 5000,
-                    open: true
+                    port: 5000
+                        // open: true
                 }
             }
         },
@@ -22,25 +22,31 @@ module.exports = grunt => {
                     // dest: './temp/content/',
                     // filter: 'isFile'
                     //},
+                    // {
+                    //     expand: true,
+                    //     cwd: './LibraryBox-landingpage/www_content/',
+                    //     src: '*.php',
+                    //     dest: './temp/content/',
+                    //     filter: 'isFile'
+                    // }, {
+                    //     expand: true,
+                    //     cwd: './LibraryBox-landingpage/www_content/',
+                    //     src: '*.html',
+                    //     dest: './temp/content/',
+                    //     filter: 'isFile'
+                    // },
                     {
                         expand: true,
                         cwd: './LibraryBox-landingpage/www_content/',
-                        src: '*.php',
+                        src: '**',
                         dest: './temp/content/',
-                        filter: 'isFile'
-                    }, {
-                        expand: true,
-                        cwd: './LibraryBox-landingpage/www_content/',
-                        src: '*.html',
-                        dest: './temp/content/',
-                        filter: 'isFile'
                     },
-                    { expand: true, cwd: './LibraryBox-landingpage/www_content/css', src: '**', dest: './temp/css', filter: 'isFile' },
-                    { expand: true, cwd: './LibraryBox-landingpage/www_content/dir-images', src: '**', dest: './temp/dir-images', filter: 'isFile' },
-                    { expand: true, cwd: './LibraryBox-landingpage/www_content/fonts', src: '**', dest: './temp/fonts', filter: 'isFile' },
-                    { expand: true, cwd: './LibraryBox-landingpage/www_content/img', src: '**', dest: './temp/img', filter: 'isFile' },
-                    { expand: true, cwd: './LibraryBox-landingpage/www_content/js', src: '**', dest: './temp/js', filter: 'isFile' },
-                    { expand: true, cwd: './LibraryBox-landingpage/www_content/locales', src: '**', dest: './temp/locales', filter: 'isFile' }
+                    // { expand: true, cwd: './LibraryBox-landingpage/www_content/css', src: '**', dest: './temp/css', filter: 'isFile' },
+                    // { expand: true, cwd: './LibraryBox-landingpage/www_content/dir-images', src: '**', dest: './temp/dir-images', filter: 'isFile' },
+                    // { expand: true, cwd: './LibraryBox-landingpage/www_content/fonts', src: '**', dest: './temp/fonts', filter: 'isFile' },
+                    // { expand: true, cwd: './LibraryBox-landingpage/www_content/img', src: '**', dest: './temp/img', filter: 'isFile' },
+                    // { expand: true, cwd: './LibraryBox-landingpage/www_content/js', src: '**', dest: './temp/js', filter: 'isFile' },
+                    // { expand: true, cwd: './LibraryBox-landingpage/www_content/locales', src: '**', dest: './temp/locales', filter: 'isFile' }
                 ]
             },
             main: {

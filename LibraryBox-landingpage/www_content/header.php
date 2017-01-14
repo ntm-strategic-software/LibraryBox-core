@@ -14,7 +14,7 @@ if(loggedIn()) {
     <div class="container">
         <div class="navbar-header">
             <!--<a href="/content/" class="brand navbar-brand"><img src="img/lbx-logo-small-white.png" width="24" alt="lbx-logo-small">&nbsp;Scatterbox</a>-->
-            <a href="/content" class="brand navbar-brand"><i class="fa fa-cube"></i>&nbsp;Scatterbox</a>
+            <a href="/content/" class="brand navbar-brand"><i class="fa fa-cube"></i>&nbsp;Scatterbox</a>
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span data-l10n-id="commonNavbarToggle" class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
@@ -24,7 +24,7 @@ if(loggedIn()) {
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li><a href="/content" class="active"><i class="fa fa-home"></i> <span data-l10n-id="commonNavbarHome">Home</span></a></li>
+                <li><a href="/content/" class="active"><i class="fa fa-home"></i> <span data-l10n-id="commonNavbarHome">Home</span></a></li>
                 <!--<li><a href="/Shared/text/"><i class="fa fa-file-text-o"></i> <span data-l10n-id="commonNavbarText">Text</span></a></li>
                 <li><a href="/Shared/audio/"><i class="fa fa-file-sound-o"></i> <span data-l10n-id="commonNavbarAudio">Audio</span></a></li>
                 <li><a href="/Shared/video/"><i class="fa fa-file-video-o"></i> <span data-l10n-id="commonNavbarVideo">Video</span></a></li>

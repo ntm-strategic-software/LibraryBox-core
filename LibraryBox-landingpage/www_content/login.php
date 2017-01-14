@@ -20,21 +20,21 @@ if($requestMethod === "POST") {
         if(($user["username"] === $username) && ($user["password"] === $password)) {
             $isValid = true;
 
-            setCookie("sb_auth", $user["id"]);
+            setCookie("sb_auth", $user["id"], time()+60*60*24*365, "/");
 
             break;
         }
     }
 
     if($isValid) {
-        redirect("/content");
+        redirect("/content/");
     }
 
 } else {
 
     $userArr = getUser();
     if(loggedIn()) {
-        redirect("/content");
+        redirect("/content/");
     }
 
 }
