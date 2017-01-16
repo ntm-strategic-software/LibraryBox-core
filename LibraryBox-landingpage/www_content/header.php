@@ -41,7 +41,7 @@ if(loggedIn()) {
                         }
                     }
                 ?>
-                <li><a href="/content/about.html"><i class="fa fa-question-circle"></i> <span data-l10n-id="commonNavbarAbout">About</span></a></li>
+                <li><a href="/content/about.php"><i class="fa fa-question-circle"></i> <span data-l10n-id="commonNavbarAbout">About</span></a></li>
                 <?php
                     if(loggedIn()) {
                         print '<li><a href="/content/logout.php"><i class="fa fa-sign-in"></i> <span data-l10n-id="commonNavbarLogout">Logout</span></a></li>';

@@ -2,8 +2,30 @@
 
 include('util.php');
 
+$content_path = (getenv('scatterbox_content') != null) ? getenv('scatterbox_content') : '/mnt/usb/LibraryBox/content';
+// $public_path = (getenv('scatterbox_public') != null) ? getenv('scatterbox_public') : '/mnt/usb/LibraryBox/public';
+// $user_files_path = (getenv('scatterbox_user_files') != null) ? getenv('scatterbox_user_files') : '/mnt/usb/LibraryBox/user-files';
+
+if(!file_exists('../public')) {
+    mkdir('../public');
+    $folders = array('apps', 'audio', 'music', 'pictures', 'text', 'video');
+    foreach($folders as $folder) {
+        mkdir("../public/$folder");
+    }
+}
+if(!file_exists('../user-files')) {
+    mkdir('../user-files');
+    $folders = array();
+    for($i = 1; $i < 7; $i++) {
+        $folders[count($folders)] = "group-$i";
+    }
+    foreach($folders as $folder) {
+        mkdir("../user-files/$folder");
+    }
+}
+
 if(!isset($GLOBALS['groups'])) {
-    $groups_json_path = '/mnt/usb/LibraryBox/content/groups.json';
+    $groups_json_path = "$content_path/groups.json";
     if(!file_exists($groups_json_path)) {
     	//print 'file does not exist!';
         $file=fopen($groups_json_path,"w");
@@ -22,7 +44,7 @@ if(!isset($GLOBALS['groups'])) {
 }
 
 if(!isset($GLOBALS["users"])) {
-    $users_path = '/mnt/usb/LibraryBox/content/users.txt';
+    $users_path = "$content_path/users.txt";
     if(!file_exists($users_path)) {
         $file=fopen($users_path,"w");
         $pass = sha1("adminpass");

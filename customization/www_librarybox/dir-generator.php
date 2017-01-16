@@ -466,7 +466,7 @@ if(!$is_top_level) {
 	//print($path_arr[1]);
 	if(!isAllowed(getGroupName($path_arr[1]))) {
 		//print 'not allowed';
-		redirect('/Shared');
+		redirect('/');
 		die();
 	}
 }
