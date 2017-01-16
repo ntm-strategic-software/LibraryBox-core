@@ -53,6 +53,20 @@ if(loggedIn()) {
 	$user = array();
 }
 
+//$group_names = getGroupNames();
+//print $group_names[0];
+
+function getGroupName($str) {
+	$group_names = getGroupNames();
+	for($i = 0; $i < count($group_names); $i++) {
+		if($str === "group-" . ($i + 1)) {
+			return $group_names[$i];
+		}
+	}
+	return $str;
+}
+// print getGroupName('group-3');
+
 $show_hidden_files = true;
 $calculate_folder_size = false;
 $display_header = true;
@@ -245,6 +259,7 @@ print '<!DOCTYPE html>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Index of /'.$vpath.'</title>
 		<link href="/content/css/bootstrap.css" rel="stylesheet">
+		<link rel="stylesheet" href="/content/css/font-awesome.css">
 		<link rel="stylesheet" href="/content/css/dir_list.css">
 
 		  	<link rel="prefetch" type="application/l10n" href="/content/locales/locales.ini" />
@@ -276,6 +291,17 @@ print "<h2 data-l10n-id='filedirIndex'>Index of /" . $vpath ."</h2>
 	<div class='list'>
 	<table>";
 
+/*
+function isTopLevel($p) {                                                                                                                             
+        if(count(explode("/", $path)) === 2) {                                                                                                        
+        	return true;                                                                                                                          
+        } else {                                                                                                                                      
+                return false;                                                                                                                         
+        }                                                                                                                                             
+}                                                                                                                                                     
+                                                                                                                                                                                                              
+$is_top_level = isTopLevel($path);
+*/
 
 // Get all of the folders and files.
 $folderlist = array();
@@ -393,11 +419,29 @@ if($path != "./") {
 	print "<td class='t hidden-sm hidden-xs'>Directory</td></tr>\n";
 }
 
+print $path . '<br>';
+// print count(explode("/", $path));
 
+function isTopLevel($p) {
+	if(count(explode("/", $p)) === 2) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+$is_top_level = isTopLevel($path);
 
 // Print folder information
 foreach($folderlist as $folder) {
-	print "<tr><td class='n'><a id='folder' href='" . rawurlencode( $folder['name'] ) . "'>" .get_utf8_encoded($folder['name']). "</a>/</td>";
+	$utf_name = get_utf8_encoded($folder['name']);
+	$name;
+	if(is_top_level) {
+		$name = getGroupName($utf_name);
+	} else {
+		$name = $utf_name;
+	}
+	print "<tr><td class='n'><a id='folder' href='" . rawurlencode( $folder['name'] ) . "'>" . $name . "</a>/</td>";
 	//print "<td class='m'>" . date('Y-M-d H:i:s', $folder['modtime']) . "</td>";
 	print "<td class='s hidden-sm hidden-xs'>" . (($calculate_folder_size)?format_bytes($folder['size'], 2):'--') . " </td>";
 	print "<td class='t hidden-sm hidden-xs'>" . $folder['file_type']                    . "</td></tr>\n";

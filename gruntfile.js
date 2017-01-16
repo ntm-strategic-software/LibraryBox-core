@@ -41,6 +41,12 @@ module.exports = grunt => {
                         src: '**',
                         dest: './temp/content/',
                     },
+                    {
+                        expand: true,
+                        cwd: './customization/www_librarybox/',
+                        src: '**',
+                        dest: './temp/content/www_librarybox/',
+                    },
                     // { expand: true, cwd: './LibraryBox-landingpage/www_content/css', src: '**', dest: './temp/css', filter: 'isFile' },
                     // { expand: true, cwd: './LibraryBox-landingpage/www_content/dir-images', src: '**', dest: './temp/dir-images', filter: 'isFile' },
                     // { expand: true, cwd: './LibraryBox-landingpage/www_content/fonts', src: '**', dest: './temp/fonts', filter: 'isFile' },
@@ -60,7 +66,8 @@ module.exports = grunt => {
         watch: {
             scripts: {
                 files: [
-                    './LibraryBox-landingpage/www_content/**'
+                    './LibraryBox-landingpage/www_content/**',
+                    './customization/www_librarybox/**'
                 ],
                 tasks: ['copy'],
                 options: {

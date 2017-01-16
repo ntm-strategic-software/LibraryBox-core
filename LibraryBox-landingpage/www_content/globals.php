@@ -2,19 +2,31 @@
 
 include('util.php');
 
-if(!isset($GLOBALS["users"])) {
-
-    if(!file_exists("users.txt")) {
-        $file=fopen("users.txt","w");
-        $pass = sha1("adminpass");
-        fwrite($file, "1234567890,admin,$pass,1,1,021222324252");
-        fclose($file);
-    }
-
-    if(!file_exists("groups.json")) {
-        $file=fopen("groups.json","w");
+if(!isset($GLOBALS['groups'])) {
+    $groups_json_path = '/mnt/usb/LibraryBox/content/groups.json';
+    if(!file_exists($groups_json_path)) {
+    	//print 'file does not exist!';
+        $file=fopen($groups_json_path,"w");
         $names = array("1", "2", "3", "4", "5", "6");
         fwrite($file, json_encode($names));
+        fclose($file);
+    } else {
+    	//print 'file does exist!';
+    }
+    $file_contents_arr = file($groups_json_path);
+    $file_contents = implode($file_contents_arr);
+    // print $file_contents;
+    $file_contents = trim($file_contents);
+    $names = json_decode($file_contents);
+    $GLOBALS['groups'] = $names;
+}
+
+if(!isset($GLOBALS["users"])) {
+    $users_path = '/mnt/usb/LibraryBox/content/users.txt';
+    if(!file_exists($users_path)) {
+        $file=fopen($users_path,"w");
+        $pass = sha1("adminpass");
+        fwrite($file, "1234567890,admin,$pass,1,1,021222324252");
         fclose($file);
     }
 
@@ -22,7 +34,7 @@ if(!isset($GLOBALS["users"])) {
 
     // print "It is not yet set!";
 
-    $fileContents = file("users.txt");
+    $fileContents = file($users_path);
 
     for($i = 0; $i < count($fileContents); $i++) {
         $userStr = $fileContents[$i];
@@ -240,11 +252,10 @@ function redirect($path) {
 }
 
 function getGroupNames() {
-    $file_contents_arr = file("groups.json");
-    $file_contents = implode($file_contents_arr);
-    $file_contents = trim($file_contents);
-    $names = json_decode($file_contents);
-    return $names;
+    //foreach($GLOBALS['groups'] as $name) {
+    //	print $name . ',';
+    //}
+    return $GLOBALS['groups'];
 }
 
 function saveGroupNames($arr) {
@@ -252,6 +263,8 @@ function saveGroupNames($arr) {
     if(count($arr) != 6) {
         return false;
     }
+    
+    $names = array();
 
     for($i = 0; $i < count($arr); $i++) {
         $name = cleanStr($arr[$i]);
@@ -266,6 +279,7 @@ function saveGroupNames($arr) {
     $file = fopen("groups.json", "w");
     fwrite($file, $encoded_names);
     fclose($file);
+    $GLOBALS['groups'] = $names;
 
     return true;
 }
