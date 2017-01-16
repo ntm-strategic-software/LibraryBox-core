@@ -53,7 +53,7 @@ if(loggedIn()) {
 	$user = array();
 }
 
-//$group_names = getGroupNames();
+$group_names = getGroupNames();
 //print $group_names[0];
 
 function getGroupName($str) {
@@ -287,7 +287,12 @@ if ($display_header)
 	}
 }
 
-print "<h2 data-l10n-id='filedirIndex'>Index of /" . $vpath ."</h2>
+$split_vpath = explode("/", $vpath);
+if(isset($split_vpath[1])) {
+	$split_vpath[1] = getGroupName($split_vpath[1]);
+}
+$vpath = implode($split_vpath, '/');
+print "<h2><span data-l10n-id='filedirIndex'>Index of /</span>" . $vpath . "</h2>
 	<div class='list'>
 	<table>";
 
@@ -432,19 +437,50 @@ function isTopLevel($p) {
 
 $is_top_level = isTopLevel($path);
 
+function isAllowed($str) {
+	//print 'checking ' . $str;
+	$group_names = getGroupNames();
+	$idx = -1;
+	for($ii = 0; $ii < count($group_names); $ii++) {
+		//print '$ii is ' . $ii;
+		//print $group_names[$ii];
+		if($group_names[$ii] === $str) {
+			$idx = $ii;
+			break;
+		}
+	}
+	//print 'idx is ' . $idx . '<br>';
+	if($idx === -1) {
+		return true;
+	} elseif(!loggedIn()) {
+		return false;
+	} else {
+		$user = getUser()[0];
+		return $user['permissions'][$idx] > 0 ? true : false;
+	}
+	//print 'down here' . '<br>';
+}
+
+if(!$is_top_level) {
+	$path_arr = explode("/", $path);
+	//print($path_arr[1]);
+	if(!isAllowed(getGroupName($path_arr[1]))) {
+		//print 'not allowed';
+		redirect('/Shared');
+		die();
+	}
+}
+
 // Print folder information
 foreach($folderlist as $folder) {
 	$utf_name = get_utf8_encoded($folder['name']);
-	$name;
-	if(is_top_level) {
-		$name = getGroupName($utf_name);
-	} else {
-		$name = $utf_name;
+	$name = $is_top_level ? getGroupName($utf_name) : $utf_name;
+	if((!$is_top_level) || ($is_top_level && isAllowed($name))) {
+		print "<tr><td class='n'><a id='folder' href='" . rawurlencode( $folder['name'] ) . "'>" . $name . "</a>/</td>";
+		//print "<td class='m'>" . date('Y-M-d H:i:s', $folder['modtime']) . "</td>";
+		print "<td class='s hidden-sm hidden-xs'>" . (($calculate_folder_size)?format_bytes($folder['size'], 2):'--') . " </td>";
+		print "<td class='t hidden-sm hidden-xs'>" . $folder['file_type']                    . "</td></tr>\n";
 	}
-	print "<tr><td class='n'><a id='folder' href='" . rawurlencode( $folder['name'] ) . "'>" . $name . "</a>/</td>";
-	//print "<td class='m'>" . date('Y-M-d H:i:s', $folder['modtime']) . "</td>";
-	print "<td class='s hidden-sm hidden-xs'>" . (($calculate_folder_size)?format_bytes($folder['size'], 2):'--') . " </td>";
-	print "<td class='t hidden-sm hidden-xs'>" . $folder['file_type']                    . "</td></tr>\n";
 }
 
 
