@@ -243,6 +243,20 @@ tr.parent a {
     color: #2281d0;
 }
 
+span.folder-icon {
+    color: #f0cb26;
+    display: inline-block;
+    min-width: 20px;
+    text-align: center;
+}
+
+span.file-icon {
+    color: #333;
+    display: inline-block;
+    min-width: 20px;
+    text-align: center;
+}
+
 
 /*------------------------------------*\
     Footer

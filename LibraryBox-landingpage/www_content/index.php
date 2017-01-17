@@ -22,7 +22,7 @@ if(loggedIn()) { // the user is logged in, so show user files
             }
             $folders[count($folders)] = array(
                 'name' => $name,
-                'path' => '/user-files/group-' . ($i + 1),
+                'path' => '/Shared/user-files/group-' . ($i + 1),
                 'localizationKey' => '',
                 'icon' => 'folder'
             );
@@ -30,55 +30,10 @@ if(loggedIn()) { // the user is logged in, so show user files
     }
     $folders[count($folders)] = array(
         'name' => 'public',
-            'path' => '/public',
-            'localizationKey' => '',
+            'path' => '/Shared/public',
+            'localizationKey' => 'commonPublic',
             'icon' => 'folder'
     );
-
-    // $folders = array(
-    //     array(
-    //         'name' => 'public',
-    //         'path' => '/public',
-    //         'localizationKey' => '',
-    //         'icon' => 'folder'
-    //     ),
-    //     array(
-    //         'name' => $group_names[0],
-    //         'path' => '/user-files/group-1',
-    //         'localizationKey' => '',
-    //         'icon' => 'folder'
-    //     ),
-    //     array(
-    //         'name' => $group_names[1],
-    //         'path' => '/user-files/group-2',
-    //         'localizationKey' => '',
-    //         'icon' => 'folder'
-    //     ),
-    //     array(
-    //         'name' => $group_names[2],
-    //         'path' => '/user-files/group-3',
-    //         'localizationKey' => '',
-    //         'icon' => 'folder'
-    //     ),
-    //     array(
-    //         'name' => $group_names[3],
-    //         'path' => '/user-files/group-4',
-    //         'localizationKey' => '',
-    //         'icon' => 'folder'
-    //     ),
-    //     array(
-    //         'name' => $group_names[4],
-    //         'path' => '/user-files/group-5',
-    //         'localizationKey' => '',
-    //         'icon' => 'folder'
-    //     ),
-    //     array(
-    //         'name' => $group_names[5],
-    //         'path' => '/user-files/group-6',
-    //         'localizationKey' => '',
-    //         'icon' => 'folder'
-    //     )
-    // );
 
     $folder_names = array();
     foreach($folders as $key => $row) {
@@ -90,8 +45,9 @@ if(loggedIn()) { // the user is logged in, so show user files
         $name = $folder['name'];
         $icon = $folder['icon'];
         $folder_path = $folder['path'];
+        $folder_key = $folder['localizationKey'];
         $table_rows[count($table_rows)] = "
-            <a href='$folder_path' class='list-group-item' style='font-size:17.5px;line-height:27px;'><span style='display:inline-block;min-width:20px;'><i class='fa fa-$icon' style='color:#f0cb26;'></i></span><span style='padding-left:15px;'>$name</span></a>
+            <a href='$folder_path' class='list-group-item' style='font-size:17.5px;line-height:27px;'><span style='display:inline-block;min-width:20px;text-align:center;'><i class='fa fa-$icon' style='color:#f0cb26;'></i></span><span style='padding-left:15px;' data-l10n-id='$folder_key'>$name</span></a>
         ";
     }
 
@@ -143,7 +99,7 @@ if(loggedIn()) { // the user is logged in, so show user files
         $icon = $folder['icon'];
         $localization_key = $folder['localizationKey'];
         $table_rows[count($table_rows)] = "
-            <a href='/public/$name' class='list-group-item' style='font-size:17.5px;line-height:27px;'><span style='display:inline-block;min-width:20px;'><i class='fa fa-$icon'></i></span><span style='padding-left:15px;' data-l10n-id='$localization_key'>$name</span></a>
+            <a href='/Shared/public/$name' class='list-group-item' style='font-size:17.5px;line-height:27px;'><span style='display:inline-block;min-width:20px;text-align:center;'><i class='fa fa-$icon'></i></span><span style='padding-left:15px;' data-l10n-id='$localization_key'>$name</span></a>
         ";
     }
 

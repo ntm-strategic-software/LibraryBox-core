@@ -2,25 +2,29 @@
 
 include('util.php');
 
-$content_path = (getenv('scatterbox_content') != null) ? getenv('scatterbox_content') : '/mnt/usb/LibraryBox/content';
-// $public_path = (getenv('scatterbox_public') != null) ? getenv('scatterbox_public') : '/mnt/usb/LibraryBox/public';
-// $user_files_path = (getenv('scatterbox_user_files') != null) ? getenv('scatterbox_user_files') : '/mnt/usb/LibraryBox/user-files';
+$content_path = (getenv('scatterbox_content') != null) ? getenv('scatterbox_content') : '/mnt/usb/LibraryBox/Content';
+$shared_path = (getenv('scatterbox_shared') != null) ? getenv('scatterbox_shared') : '/mnt/usb/LibraryBox/Shared';
+$public_path = (getenv('scatterbox_public') != null) ? getenv('scatterbox_public') : '/mnt/usb/LibraryBox/Shared/public';
+$user_files_path = (getenv('scatterbox_user_files') != null) ? getenv('scatterbox_user_files') : '/mnt/usb/LibraryBox/Shared/user-files';
 
-if(!file_exists('../public')) {
-    mkdir('../public');
+if(!file_exists($shared_path)) {
+    mkdir($shared_path);
+}
+if(!file_exists($public_path)) {
+    mkdir($public_path);
     $folders = array('apps', 'audio', 'music', 'pictures', 'text', 'video');
     foreach($folders as $folder) {
-        mkdir("../public/$folder");
+        mkdir("$public_path/$folder");
     }
 }
-if(!file_exists('../user-files')) {
-    mkdir('../user-files');
+if(!file_exists($user_files_path)) {
+    mkdir($user_files_path);
     $folders = array();
     for($i = 1; $i < 7; $i++) {
         $folders[count($folders)] = "group-$i";
     }
     foreach($folders as $folder) {
-        mkdir("../user-files/$folder");
+        mkdir("$user_files_path/$folder");
     }
 }
 

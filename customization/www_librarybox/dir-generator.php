@@ -288,8 +288,15 @@ if ($display_header)
 }
 
 $split_vpath = explode("/", $vpath);
-if(isset($split_vpath[1])) {
-	$split_vpath[1] = getGroupName($split_vpath[1]);
+if($split_vpath[1] === 'public') {
+	$split_vpath[1] = "<span data-l10n-id='commonPublic'>public</span>";
+	if(isset($split_vpath[2])) {
+		$inner_folder_name = ucfirst($split_vpath[2]);
+		$split_vpath[2] = "<span data-l10n-id='folder$inner_folder_name'></span>";
+	}
+} else if(isset($split_vpath[2])) {
+	$split_vpath[1] = "<span data-l10n-id='folderUserFiles'>user-files</span>";
+	$split_vpath[2] = getGroupName($split_vpath[2]);
 }
 $vpath = implode($split_vpath, '/');
 print "<h2><span data-l10n-id='filedirIndex'>Index of /</span>" . $vpath . "</h2>
@@ -414,24 +421,23 @@ foreach($sort_methods as $key=>$item) {
 }
 print "</tr></thead><tbody>";
 
-
-
-// Parent directory link
-if($path != "./") {
-	print "<tr><td class='n'><a id='folder' href='..' data-l10n-id='filedirParDir' ></a>/</td>";
-	//print "<td class='m'> </td>";
-	print "<td class='s hidden-sm hidden-xs'> </td>";
-	print "<td class='t hidden-sm hidden-xs'>Directory</td></tr>\n";
-}
-
-print $path . '<br>';
-// print count(explode("/", $path));
-
-function isTopLevel($p) {
-	if(count(explode("/", $p)) === 2) {
-		return true;
-	} else {
-		return false;
+function isTopLevel($op) {
+	$p = explode('/', $op);
+	$is_logged_in = loggedIn();
+	if($p[1] === 'public') { // they are in the public directory
+		if($is_logged_in && count($p) === 3) {
+			return true;
+		} else if(!$is_logged_in && count($p) === 4) {
+			return true;
+		} else {
+			return false;
+		}
+	} else { // they are in the user-files directory
+		if(count($p) === 4) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
 
@@ -461,20 +467,46 @@ function isAllowed($str) {
 	//print 'down here' . '<br>';
 }
 
-if(!$is_top_level) {
+// Parent directory link
+if($path != "./") {
+	$parent_dir_path = $is_top_level ? '/content' : '..';
+	print "<tr><td class='n'><a id='folder' href='$parent_dir_path' data-l10n-id='filedirParDir' ></a>/</td>";
+	//print "<td class='m'> </td>";
+	print "<td class='s hidden-sm hidden-xs'> </td>";
+	print "<td class='t hidden-sm hidden-xs'>Directory</td></tr>\n";
+}
+
+print $path . '<br>';
+// print count(explode("/", $path));
+
+if(count(explode('/', $path)) > 2) {
 	$path_arr = explode("/", $path);
 	//print($path_arr[1]);
-	if(!isAllowed(getGroupName($path_arr[1]))) {
-		//print 'not allowed';
+	if(!isAllowed(getGroupName($path_arr[2]))) {
+		print 'not allowed';
 		redirect('/');
 		die();
+	}
+}
+
+$in_public = false;
+if(count(explode('/', $path)) > 1) {
+	$path_arr = explode("/", $path);
+	if($path_arr[1] === 'public') {
+		$in_public = true;
 	}
 }
 
 // Print folder information
 foreach($folderlist as $folder) {
 	$utf_name = get_utf8_encoded($folder['name']);
-	$name = $is_top_level ? getGroupName($utf_name) : $utf_name;
+	$name;
+	if(loggedIn() && $in_public && $is_top_level) {
+		$inner_folder_name = ucfirst($utf_name);
+		$name = "<span data-l10n-id='folder$inner_folder_name'>$utf_name</span>";
+	} else {
+		$name = $is_top_level ? getGroupName($utf_name) : $utf_name;
+	}
 	if((!$is_top_level) || ($is_top_level && isAllowed($name))) {
 		print "<tr><td class='n'><a id='folder' href='" . rawurlencode( $folder['name'] ) . "'>" . $name . "</a>/</td>";
 		//print "<td class='m'>" . date('Y-M-d H:i:s', $folder['modtime']) . "</td>";
@@ -536,5 +568,4 @@ if ($display_readme)
 print "<div class='foot'>Scatterbox </div>
 	</body>
 	</html>";
-
 
