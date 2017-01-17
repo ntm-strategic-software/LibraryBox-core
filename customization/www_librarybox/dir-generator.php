@@ -88,7 +88,12 @@ $folder_statistics = array();
 $movie_types = array('mpg','mpeg','avi','asf','mp4','aif','aiff','ram', 'asf','au');
 $image_types = array('jpg','jpeg','gif','png','tif','tiff','bmp','ico','svg');
 $archive_types = array('zip','cab','7z','gz','tar.bz2','tar.gz','tar','rar',);
-$document_types = array('txt','text','doc','docx','abw','odt','pdf','rtf','tex','texinfo','ppt','pptx','pps','ppsx','xls','xlsx');
+$document_types = array('txt','text','abw','rtf','tex','texinfo','odf');
+$word_document_types = array('doc','docx','odt');
+$spreadsheet_types = array('xls','xlsx','ods');
+$drawing_types = array('pub','odg');
+$presentation_types = array('ppt','pptx','pps','ppsx','odp');
+$pdf_types = array('pdf');
 $font_types = array('ttf','otf','abf','afm','bdf','bmf','fnt','fon','mgf','pcf','ttc','tfm','snf','sfd');
 $audio_types = array('mp3','ogg','aac','wma','wav','midi','mid','flac');
 
@@ -195,31 +200,54 @@ function get_file_type($file) {
 
 # returns a small ID which can be used on CSS for pictures
 function get_file_type_id($file) {
-	global $image_types, $movie_types, $archive_types, $document_types, $font_types, $audio_types;
+	global $image_types, $movie_types, $archive_types, $document_types, $word_document_types, $spreadsheet_types, $drawing_types, $presentation_types, $pdf_types, $font_types, $audio_types;
 
 	$pos = strrpos($file, ".");
 	if ($pos === false) {
-                return "file";
-        }
+		return "file";
+	}
 
 	$ext = rtrim(substr($file, $pos+1), "~");
-        if(in_array($ext, $image_types)) {
-	        $type = "img";
-        } elseif(in_array($ext, $movie_types)) {
-                $type = "video";
-        } elseif(in_array($ext, $audio_types)) {
-                $type = "audio";
-        } elseif(in_array($ext, $archive_types)) {
-                $type = "archive";
+	$ext = strtolower($ext);
+	if(in_array($ext, $image_types)) {
+		// $type = "img";
+		$type = "file-image-o";
+	} elseif(in_array($ext, $movie_types)) {
+		// $type = "video";
+		$type = "file-video-o";
+	} elseif(in_array($ext, $audio_types)) {
+		// $type = "audio";
+		$type = "file-audio-o";
+	} elseif(in_array($ext, $archive_types)) {
+		// $type = "archive";
+		$type = "file-archive-o";
 	} elseif(in_array($ext, $document_types)) {
-	        $type = "doc";
-        } elseif(in_array($ext, $font_types)) {
-	         $type = "font";
-        } else {
-                 $type = "file";
-        }
+		// $type = "doc";
+		$type = "file-text-o";
+	} elseif(in_array($ext, $word_document_types)) {
+		// $type = "doc";
+		$type = "file-word-o";
+	} elseif(in_array($ext, $spreadsheet_types)) {
+		// $type = "doc";
+		$type = "file-excel-o";
+	} elseif(in_array($ext, $drawing_types)) {
+		// $type = "doc";
+		$type = "file-text-o";
+	} elseif(in_array($ext, $presentation_types)) {
+		// $type = "doc";
+		$type = "file-powerpoint-o";
+	} elseif(in_array($ext, $pdf_types)) {
+		// $type = "doc";
+		$type = "file-pdf-o";
+	} elseif(in_array($ext, $font_types)) {
+			// $type = "font";
+			$type = "file-archive-o";
+	} else {
+		// $type = "file";
+		$type = "file-o";
+	}
 
-        return($type);
+	return($type);
 }
 
 
@@ -470,13 +498,13 @@ function isAllowed($str) {
 // Parent directory link
 if($path != "./") {
 	$parent_dir_path = $is_top_level ? '/content' : '..';
-	print "<tr><td class='n'><a id='folder' href='$parent_dir_path' data-l10n-id='filedirParDir' ></a>/</td>";
+	print "<tr><td><a href='$parent_dir_path'><span class='folder-icon'><i class='fa fa-folder'></i></span> <span data-l10n-id='filedirParDir'></span></a>/</td>";
 	//print "<td class='m'> </td>";
 	print "<td class='s hidden-sm hidden-xs'> </td>";
 	print "<td class='t hidden-sm hidden-xs'>Directory</td></tr>\n";
 }
 
-print $path . '<br>';
+// print $path . '<br>';
 // print count(explode("/", $path));
 
 if(count(explode('/', $path)) > 2) {
@@ -508,7 +536,7 @@ foreach($folderlist as $folder) {
 		$name = $is_top_level ? getGroupName($utf_name) : $utf_name;
 	}
 	if((!$is_top_level) || ($is_top_level && isAllowed($name))) {
-		print "<tr><td class='n'><a id='folder' href='" . rawurlencode( $folder['name'] ) . "'>" . $name . "</a>/</td>";
+		print "<tr><td style='padding-left:30px;'><a href='" . rawurlencode( $folder['name'] ) . "'><span class='folder-icon'><i class='fa fa-folder'></i></span> " . $name . "</a>/</td>";
 		//print "<td class='m'>" . date('Y-M-d H:i:s', $folder['modtime']) . "</td>";
 		print "<td class='s hidden-sm hidden-xs'>" . (($calculate_folder_size)?format_bytes($folder['size'], 2):'--') . " </td>";
 		print "<td class='t hidden-sm hidden-xs'>" . $folder['file_type']                    . "</td></tr>\n";
@@ -518,7 +546,7 @@ foreach($folderlist as $folder) {
 
 
 // This simply creates an extra line for file/folder seperation
-print "<tr><td colspan='4' style='height:7px;'></td></tr>\n";
+// print "<tr><td colspan='4' style='height:7px;background-color:#fff;'></td></tr>\n";
 
 
 
@@ -533,7 +561,8 @@ foreach($filelist as $file) {
 		$file_link_prefix="/dl_statistics_counter.php?DL_URL=/" . rawurlencode($path);
 	}
 
-	print "<tr><td class='n'><a id='".$file['img_id']."' href='$file_link_prefix" . rawurlencode($file['name']). "'>" .get_utf8_encoded($file['name']). "</a></td>";
+	$icon_name = $file['img_id'];
+	print "<tr><td style='padding-left:30px;'><a href='$file_link_prefix" . rawurlencode($file['name']). "'><span class='file-icon'><i class='fa fa-$icon_name'></i></span> " .get_utf8_encoded($file['name']). "</a></td>";
 	// print "<td class='m'>" . date('Y-M-d H:i:s', $file['modtime'])   . "</td>";
 	print "<td class='s hidden-sm hidden-xs'>" . format_bytes($file['size'],2)           . " </td>";
 	print "<td class='t hidden-sm hidden-xs'>" . $file['file_type']                      . "</td>";
