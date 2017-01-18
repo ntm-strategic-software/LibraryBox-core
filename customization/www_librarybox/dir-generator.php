@@ -326,6 +326,7 @@ if($split_vpath[1] === 'public') {
 	$split_vpath[1] = "<span data-l10n-id='folderUserFiles'>user-files</span>";
 	$split_vpath[2] = getGroupName($split_vpath[2]);
 }
+$split_vpath = array_slice($split_vpath, 1);
 $vpath = implode($split_vpath, '/');
 print "<h2><span data-l10n-id='filedirIndex'>Index of /</span>" . $vpath . "</h2>
 	<div class='list'>
