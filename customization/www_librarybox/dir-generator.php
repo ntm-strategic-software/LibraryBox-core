@@ -594,8 +594,32 @@ if ($display_readme)
 		readfile($path.'/README.html');
 	}
 }
+?>
 
+<div class="upload-outer-container">
+    <div class="new-file-folder-outer-container">
+        <div class="new-file-folder-container" id="js-newFileFolderButtonContainer" style="display:none;opacity:0;">
+            <a href="/content/new-file.php?p=<?php print rawurlencode($path) ?>">
+                <div id="js-newFileButton" class="round-upload-button new-file-button">
+                    <i class="fa fa-file-text"></i>
+                </div>
+            </a>
+            <a href="/content/new-folder.php?p=<?php echo rawurlencode($path) ?>">
+                <div id="js-newFolderButton" class="round-upload-button new-folder-button">
+                    <i class="fa fa-folder"></i>
+                </div>
+            </a>
+        </div>
+    </div>
+    <a href="#" id="js-showUploadOptions">
+        <div class="round-upload-button show-upload-buttons">
+            <i class="fa fa-plus"></i>
+        </div>
+    </a>
+</div>
+
+<?php
 print "<div class='foot'>Scatterbox </div>
 	</body>
 	</html>";
-
+?>

@@ -41,6 +41,9 @@ for($i = 0; $i < count($names); $i++) {
     }
 }
 
+list($path) = explode('?', $_SERVER['REQUEST_URI']);
+$path = ltrim(rawurldecode($path), '/');
+
 ?>
 
 <div class="container">
