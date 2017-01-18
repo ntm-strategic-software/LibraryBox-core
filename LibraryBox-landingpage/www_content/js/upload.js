@@ -1,6 +1,6 @@
 var $j = $ ? $ : $j;
 
-$j(document).ready(() => {
+$j(document).ready(function() {
     var $ = $j ? $j : $;
 
     var transitioning = false;
@@ -22,6 +22,48 @@ $j(document).ready(() => {
                 }, 400);
             }
         }
+    });
+
+    $('#js-fileInput').on('change', function(e) {
+        if (e.target.files.length === 0) {
+            return;
+        }
+        var file = e.target.files[0];
+        var name = file.name;
+
+        var url = window.location.href;
+        var splitUrl = url.split('?');
+        var query = splitUrl[1];
+        var splitQuery = query
+            .split('&')
+            .filter(function(q) {
+                var trimmedStr = q.trim();
+                if (q[0] === 'p') {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        var rawPath = splitQuery[0].split('=')[1];
+        var path = decodeURIComponent(rawPath);
+        var fullPath = path + name;
+        // console.log(fullPath);
+
+        var request = new XMLHttpRequest();
+        request.addEventListener('load', function(res) {
+            const fileExists = res.target.responseText;
+            if (fileExists === 'true') {
+                $('#js-overwriteWarning').css('display', 'block');
+                $('#js-submitButton').addClass('btn-danger');
+                $('#js-submitButton').removeClass('btn-primary');
+            }
+        });
+        request.addEventListener('error', function(err) {
+            console.log(err);
+        });
+        request.open('POST', 'check-file.php?p=' + encodeURIComponent(fullPath));
+        request.send();
+
     });
 
 });

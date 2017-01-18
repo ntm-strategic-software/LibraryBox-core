@@ -85,10 +85,10 @@ include('header.php');
     <div class="row">
       <div class="col-sm-7 col-md-6 col-lg-5">
         <?php
-if($status === 1) {
-    echo "<div class='alert alert-danger'>$err_message</div>";
-}
-?>
+            if($status === 1) {
+                echo "<div class='alert alert-danger'>$err_message</div>";
+            }
+        ?>
           <form action="/content/new-folder.php?p=<?php echo rawurlencode($path) ?>" method="post">
             <div class="form-group">
               <label>New Folder Name</label>
