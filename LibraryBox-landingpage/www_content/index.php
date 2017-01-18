@@ -59,7 +59,7 @@ if(loggedIn()) { // the user is logged in, so show user files
         array(
             'name' => 'apps',
             'localizationKey' => 'folderApps',
-            'icon' => 'laptop'
+            'icon' => 'tablet'
         ),
         array(
             'name' => 'audio',
