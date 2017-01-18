@@ -1,5 +1,7 @@
+var $j = $ ? $ : $j;
+
 $j(document).ready(() => {
-    var $ = $j;
+    var $ = $j ? $j : $;
 
     var transitioning = false;
     $('#js-showUploadOptions').on('click', function(e) {

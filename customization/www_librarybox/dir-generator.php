@@ -620,6 +620,8 @@ if ($display_readme)
 
 <?php
 print "<div class='foot'>Scatterbox </div>
+	<script type='text/javascript' src='/content/js/jquery.min.js'></script>
+	<script type='text/javascript' src='/content/js/upload.js'></script>
 	</body>
 	</html>";
 ?>

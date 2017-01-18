@@ -261,6 +261,9 @@ textarea:first-child {
     }
 }
 
+
+/* File and folder creation buttons */
+
 div.upload-outer-container {
     position: fixed;
     right: 20px;
