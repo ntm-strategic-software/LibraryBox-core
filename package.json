@@ -1,25 +1,26 @@
 {
-  "name": "scatterbox",
-  "version": "0.1.0",
-  "description": "scatterbox",
-  "main": "index.js",
-  "scripts": {
-    "start": "cd LibraryBox-landingpage/www_content && grunt"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ntm-strategic-software/LibraryBox-core.git"
-  },
-  "author": "Ryan Burgett",
-  "license": "GPL-3.0",
-  "bugs": {
-    "url": "https://github.com/ntm-strategic-software/LibraryBox-core/issues"
-  },
-  "homepage": "https://github.com/ntm-strategic-software/LibraryBox-core#readme",
-  "devDependencies": {
-    "grunt": "^1.0.1",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt-php": "^1.5.1"
-  }
+    "name": "scatterbox",
+    "version": "0.1.0",
+    "description": "scatterbox",
+    "main": "index.js",
+    "scripts": {
+        "start": "export scatterbox_content=. && scatterbox_public=../Shared/public && scatterbox_shared=../Shared && scatterbox_user_files=../Shared/user-files && cd LibraryBox-landingpage/www_content && grunt",
+        "build": "bash build_dist.sh"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ntm-strategic-software/LibraryBox-core.git"
+    },
+    "author": "Ryan Burgett",
+    "license": "GPL-3.0",
+    "bugs": {
+        "url": "https://github.com/ntm-strategic-software/LibraryBox-core/issues"
+    },
+    "homepage": "https://github.com/ntm-strategic-software/LibraryBox-core#readme",
+    "devDependencies": {
+        "grunt": "^1.0.1",
+        "grunt-contrib-copy": "^1.0.0",
+        "grunt-contrib-watch": "^1.0.0",
+        "grunt-php": "^1.5.1"
+    }
 }

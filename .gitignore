@@ -7,3 +7,4 @@ librarybox
 /LibraryBox-landingpage/www_content/groups.json
 /temp/
 npm-debug.log
+/dist/

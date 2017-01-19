@@ -4,8 +4,11 @@
 4. Exit your SSH session and power off the device.
 5. Remove the USB stick and insert into your computer.
 6. Copy the provided scatterbox_setup_files directory onto the root of the USB stick.
-7. Put the USB stick back into the router, power it up, and connect to the network.
-8. SSH into the device.
-9. Run the following command: ash /mnt/usb/LibraryBox/scatterbox_setup.sh
-10. Exit the SSH session.
-11. Restart the device.
+7. Rename the Content folder in /LibraryBox/Content on the USB stick to Content-old.
+8. Delete all the contents of /LibraryBox/Shared
+9. Copy the Content folder from the scatterbox_setup_files directory to /LibraryBox/Content
+10. Put the USB stick back into the router, power it up, and connect to the network.
+11. SSH into the device.
+12. Run the following command: ash /mnt/usb/scatterbox_setup_files/scatterbox_setup.sh
+13. Exit the SSH session.
+14. Restart the device.

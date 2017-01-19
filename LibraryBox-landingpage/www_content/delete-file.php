@@ -47,6 +47,7 @@ if(isset($_SERVER['QUERY_STRING'])) {
 }
 
 $path = trim($path);
+$path = ($path[0] === '/') ? substr($path, 1) : $path;
 $path_arr = explode('/', $path);
 $base_path = '/mnt/usb/LibraryBox/';
 $full_path = '';
