@@ -1,5 +1,5 @@
 <?php
 
-include('/mnt/usb/LibraryBox/www_librarybox/dir-generator.php');
+include('/mnt/usb/LibraryBox/Content/www_librarybox/dir-generator.php');
 
 ?>
