@@ -27,7 +27,7 @@ $names = getGroupNames();
 for($i = 0; $i < count($names); $i++) {
     $name = $names[$i];
     $group_number = $i + 1;
-    $group_label = "Group " . $group_number;
+    $group_label = "<span data-l10n-id='commonGroup'>Group</span> " . $group_number;
     if($name == $group_number) {
         $name_inputs = $name_inputs . "<div class='form-group'>
                 <label>$group_label</label>
@@ -49,7 +49,7 @@ $path = ltrim(rawurldecode($path), '/');
 <div class="container">
     <div class="row">
         <div class="col-sm-12">
-            <h2>Group Names</h2>
+            <h2 data-l10n-id='groupsFormGroupNames'>Group Names</h2>
         </div>
     </div>
     <div class="row">
@@ -57,17 +57,17 @@ $path = ltrim(rawurldecode($path), '/');
             <form action='/content/groups.php' method='post'>
                 <?php
                     if($status === 1) {
-                        print '<div class="alert alert-danger">There was a problem updating the group names.</div>';
+                        print '<div class="alert alert-danger" data-l10n-id="groupsFomrGroupError">There was a problem updating the group names.</div>';
                     } else if($status === 2) {
                         print '<div class="alert alert-success alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <span >Group names successfully updated.</span>
+                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+                            <span  data-l10n-id="groupsFomrGroupSuccess">Group names successfully updated.</span>
                         </div>';
                     }
                     print $name_inputs;
                 ?>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-refresh"></i> Save Changes</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-refresh"></i> <span data-l10n-id='commonSaveChanges'>Save Changes</span></button>
                 </div>
             </form>
         </div>
