@@ -2,7 +2,7 @@
 
 # Update dir-generator.php
 mv /opt/piratebox/www/dir-generator.php /opt/piratebox/www/dir-generator-old.php
-cp /mnt/usb/LibraryBox/dir-generator.php /opt/piratebox/www/dir-generator.php
+cp /mnt/usb/scatterbox_setup_files/dir-generator.php /opt/piratebox/www/dir-generator.php
 
 # Update php.ini
 mv /etc/php.ini /etc/php-old.ini

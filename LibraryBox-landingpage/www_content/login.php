@@ -50,20 +50,20 @@ include("header.php");
         <form action='/content/login.php' method='post'>
           <?php
             if(!$isValid) {
-              print '<div class="alert alert-danger">Invalid Username or Password</div>';
+              print '<div class="alert alert-danger" data-l10n-id="loginFormInvalid">Invalid Username or Password.</div>';
             }
           ?>
 
             <div class="form-group">
-              <label data-l10n-id="loginFormUsername">Username</label>
+              <label data-l10n-id="commonUsername">Username</label>
               <input type='text' class="form-control" name='username' autofocus></input>
             </div>
             <div class="form-group">
-              <label data-l10n-id="loginFormPassword">Password</label>
+              <label data-l10n-id="commonPassword">Password</label>
               <input type='password' class="form-control" name='password'></input>
             </div>
             <div class="form-group">
-              <button type='submit' class="btn btn-primary"><i class="fa fa-paper-plane"></i> <span data-l10n-id="loginFormSubmit">Submit</span></button>
+              <button type='submit' class="btn btn-primary"><i class="fa fa-paper-plane"></i> <span data-l10n-id="commonSubmit">Submit</span></button>
             </div>
         </form>
       </div>

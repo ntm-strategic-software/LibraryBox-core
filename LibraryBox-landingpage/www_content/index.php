@@ -33,9 +33,9 @@ if(loggedIn()) { // the user is logged in, so show user files
     }
     $folders[count($folders)] = array(
         'name' => 'public',
-            'path' => '/Shared/public',
-            'localizationKey' => 'commonPublic',
-            'icon' => 'folder'
+        'path' => '/Shared/public',
+        'localizationKey' => 'commonPublic',
+        'icon' => 'folder'
     );
 
     $folder_names = array();
