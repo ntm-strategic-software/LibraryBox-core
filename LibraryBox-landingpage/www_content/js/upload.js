@@ -66,4 +66,43 @@ $j(document).ready(function() {
 
     });
 
+    var fileLinkMouseDown = false;
+    var fileLinkMouseTimeout;
+
+    $('.js-fileLink').on('mousedown', function(e) {
+        e.preventDefault();
+        fileLinkMouseDown = true;
+        fileLinkMouseTimeout = setTimeout(function() {
+            var messageId = $(e.currentTarget).attr('dataMessageId');
+            var message = $('#' + messageId).text();
+            var href = $(e.currentTarget).attr('href');
+            var splitHREF = href
+                .trim()
+                .split('/')
+                .filter(function(str) {
+                    return str ? true : false;
+                });
+            var confirmed = confirm(message + '\n\n' + decodeURIComponent(splitHREF[splitHREF.length - 1]));
+            if (confirmed) {
+
+                var request = new XMLHttpRequest();
+                request.addEventListener('load', function(res) {
+                    window.location.reload();
+                });
+                request.addEventListener('error', function(err) {
+                    console.log(err);
+                });
+                request.open('POST', 'delete-file.php?p=' + encodeURIComponent(fullPath));
+                request.send();
+
+            }
+        }, 1000);
+    });
+
+    $('body').on('mouseup', function(e) {
+        e.preventDefault();
+        fileLinkMouseDown = false;
+        clearTimeout(fileLinkMouseTimeout);
+    });
+
 });

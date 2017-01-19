@@ -526,6 +526,26 @@ if(count(explode('/', $path)) > 1) {
 	}
 }
 
+$can_edit_folders = 0;
+$permission = 0;
+if(loggedIn() && $path_arr[1] === 'user-files') {
+        $full_path = $base_path . $path;
+        $user = getUser()[0];
+        $permissions = $user['permissions'];
+        $group_num = (int)$path_arr[2][strlen($path_arr[2]) - 1];
+        // echo $group_num;
+        $group_idx = $group_num - 1;
+	$permission = $permissions[$group_idx];
+	// echo 'permission is ' . $permission;
+	$can_edit_folders = $user['folders'];
+	// echo 'can_edit_folders is ' . $can_edit_folders;
+} elseif(loggedIn()) {
+	$user = getUser()[0];
+	$permission = 2;
+	$can_edit_folders = $user['folders'];
+}
+
+
 // Print folder information
 foreach($folderlist as $folder) {
 	$utf_name = get_utf8_encoded($folder['name']);
@@ -537,7 +557,19 @@ foreach($folderlist as $folder) {
 		$name = $is_top_level ? getGroupName($utf_name) : $utf_name;
 	}
 	if((!$is_top_level) || ($is_top_level && isAllowed($name))) {
-		print "<tr><td style='padding-left:30px;'><a href='" . rawurlencode( $folder['name'] ) . "'><span class='folder-icon'><i class='fa fa-folder'></i></span> " . $name . "</a>/</td>";
+
+		$linkURL = rawurlencode( $folder['name'] );
+		if(
+			!($is_top_level && explode('/', $path)[1] === 'public') &&
+			loggedIn()
+			&& $permission > 1
+			&& $can_edit_folders > 0)
+		{
+			print "<tr><td style='padding-left:30px;'><a href='$linkURL' class='js-fileLink'  dataMessageId='js-confirmFolderDeleteMessage'><span class='folder-icon'><i class='fa fa-folder'></i></span> " . $name . "</a>/</td>";
+		} else {
+			print "<tr><td style='padding-left:30px;'><a href='$linkURL'><span class='folder-icon'><i class='fa fa-folder'></i></span> " . $name . "</a>/</td>";
+		}
+
 		//print "<td class='m'>" . date('Y-M-d H:i:s', $folder['modtime']) . "</td>";
 		print "<td class='s hidden-sm hidden-xs'>" . (($calculate_folder_size)?format_bytes($folder['size'], 2):'--') . " </td>";
 		print "<td class='t hidden-sm hidden-xs'>" . $folder['file_type']                    . "</td></tr>\n";
@@ -563,7 +595,14 @@ foreach($filelist as $file) {
 	}
 
 	$icon_name = $file['img_id'];
-	print "<tr><td style='padding-left:30px;'><a href='$file_link_prefix" . rawurlencode($file['name']). "'><span class='file-icon'><i class='fa fa-$icon_name'></i></span> " .get_utf8_encoded($file['name']). "</a></td>";
+
+	$linkURL = $file_link_prefix . rawurlencode($file['name']);
+	if(loggedIn() && $permission > 1) {
+		print "<tr><td style='padding-left:30px;'><a href='$linkURL' class='js-fileLink' dataMessageId='js-confirmFileDeleteMessage'><span class='file-icon'><i class='fa fa-$icon_name'></i></span> " .get_utf8_encoded($file['name']). "</a></td>";
+	} else {
+		print "<tr><td style='padding-left:30px;'><a href='$linkURL'><span class='file-icon'><i class='fa fa-$icon_name'></i></span> " .get_utf8_encoded($file['name']). "</a></td>";
+	}
+
 	// print "<td class='m'>" . date('Y-M-d H:i:s', $file['modtime'])   . "</td>";
 	print "<td class='s hidden-sm hidden-xs'>" . format_bytes($file['size'],2)           . " </td>";
 	print "<td class='t hidden-sm hidden-xs'>" . $file['file_type']                      . "</td>";
@@ -596,7 +635,17 @@ if ($display_readme)
 }
 ?>
 
-<div class="upload-outer-container">
+<div class="upload-outer-container" style="
+	<?php
+		if($is_top_level && explode('/', $path)[1] === 'public') {
+			echo 'display:none';
+		} elseif($permission < 2) {
+			echo 'display:none';
+		} else {
+			echo 'display:block';
+		}
+		// echo ($is_top_level && explode('/', $path)[1] === 'public') ? 'display:none;' : 'display:block'
+	?>">
     <div class="new-file-folder-outer-container">
         <div class="new-file-folder-container" id="js-newFileFolderButtonContainer" style="display:none;opacity:0;">
             <a href="/content/new-file.php?p=<?php print rawurlencode($path) ?>">
@@ -604,11 +653,15 @@ if ($display_readme)
                     <i class="fa fa-file-text"></i>
                 </div>
             </a>
-            <a href="/content/new-folder.php?p=<?php echo rawurlencode($path) ?>">
-                <div id="js-newFolderButton" class="round-upload-button new-folder-button">
-                    <i class="fa fa-folder"></i>
-                </div>
-            </a>
+            <?php
+            	if($can_edit_folders) {
+            		echo '<a href="/content/new-folder.php?p=' . rawurlencode($path) . '">
+                			<div id="js-newFolderButton" class="round-upload-button new-folder-button">
+                    				<i class="fa fa-folder"></i>
+                			</div>
+            			</a>';
+            	}
+            ?>
         </div>
     </div>
     <a href="#" id="js-showUploadOptions">
@@ -617,6 +670,9 @@ if ($display_readme)
         </div>
     </a>
 </div>
+
+<div id="js-confirmFileDeleteMessage" style="display:none">Are you sure that you want to delete this file?</div>
+<div id="js-confirmFolderDeleteMessage" style="display:none">Are you sure that you want to delete this folder?</div>
 
 <?php
 print "<div class='foot'>Scatterbox </div>
