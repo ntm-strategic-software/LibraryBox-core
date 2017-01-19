@@ -1,5 +1,8 @@
 <?php
 
+// ini_set('display_errors',1);
+// error_reporting(E_ALL);
+
 // phpinfo();
 // die();
 
@@ -69,7 +72,7 @@ if($requestMethod === 'POST') {
         $status = 1;
         $err_message = 'There was a problem uploading the file.';
     } else {
-        redirect('/');
+        redirect('/' . $path);
         die();
     }
 
@@ -88,7 +91,8 @@ include('header.php');
                     echo "<div class='alert alert-danger'>$err_message</div>";
                 }
             ?>
-            <form action="/content/new-file.php?p=<?php echo rawurlencode($path) ?>" method="post" enctype="multipart/form-data">
+            <form id="js-fileUploadForm" action="/content/new-file.php?p=<?php echo rawurlencode($path) ?>" method="post" enctype="multipart/form-data">
+                <!--input type="hidden" name="MAX_FILE_SIZE" value="1000M" /!-->
                 <div class="form-group" style="margin-bottom:30px;">
                     <label style="margin-bottom:15px;">File Upload</label>
                     <input type="file" name="newfile" id="js-fileInput" required />
@@ -100,6 +104,7 @@ include('header.php');
             </form>
         </div>
     </div>
+    <div id="js-uploadingMessage" style="display:none;">Uploading</div>
 </div>
 
 <?php

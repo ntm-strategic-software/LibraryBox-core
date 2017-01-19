@@ -2,6 +2,9 @@
 
 include("globals.php");
 
+//phpinfo();
+//die();
+
 $table_rows = array();
 $welcome_message;
 
@@ -117,13 +120,13 @@ include("header.php");
         <div class="lb-content" style="margin-top:0;">
             <div class="row">
                 <div class="col-sm-12">
-                    <?php print $welcome_message ?>
+                    <?php echo $welcome_message ?>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-12">
                     <div class="list-group">
-                        <?php print implode($table_rows) ?>
+                        <?php echo implode($table_rows) ?>
                     </div>
                 </div>
             </div>

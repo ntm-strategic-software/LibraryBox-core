@@ -2,6 +2,7 @@
 
 print '</div>
     <script src="js/jquery.min.js"></script>
+    <script src="js/sweetalert.min.js"></script>
     <script src="js/main.js"></script>
     <script src="js/upload.js"></script>
     <script src="js/files-top.js"></script>

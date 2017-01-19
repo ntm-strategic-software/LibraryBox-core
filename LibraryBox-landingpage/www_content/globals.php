@@ -30,6 +30,7 @@ if(!file_exists($user_files_path)) {
 
 if(!isset($GLOBALS['groups'])) {
     $groups_json_path = "$content_path/groups.json";
+    // echo $groups_json_path;
     if(!file_exists($groups_json_path)) {
     	//print 'file does not exist!';
         $file=fopen($groups_json_path,"w");

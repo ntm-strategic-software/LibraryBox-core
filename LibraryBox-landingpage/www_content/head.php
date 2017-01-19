@@ -1,6 +1,4 @@
-<?php
-
-print '<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -9,6 +7,7 @@ print '<!DOCTYPE html>
     <title>Scatterbox</title>
     <link rel="icon" href="favicon.ico">
     <link rel="stylesheet" href="css/font-awesome.css">
+    <link rel="stylesheet" href="css/sweetalert.css">
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/bootstrap-theme.css">
     <link rel="stylesheet" href="css/font.css">
@@ -18,6 +17,4 @@ print '<!DOCTYPE html>
 </head>
 <body>
 <span id="vc_count"></span>
-<div style="min-height:100%;position:relative;padding-bottom:100px;">';
-
-?>
+<div style="min-height:100%;position:relative;padding-bottom:100px;">

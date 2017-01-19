@@ -329,6 +329,7 @@ if($split_vpath[1] === 'public') {
 $split_vpath = array_slice($split_vpath, 1);
 $vpath = implode($split_vpath, '/');
 print "<h2><span data-l10n-id='filedirIndex'>Index of /</span>" . $vpath . "</h2>
+	<div style='padding-left:10px;'><small>Click to open a file. Press and hold to delete.</small></div>
 	<div class='list'>
 	<table>";
 

@@ -36,17 +36,17 @@ if(loggedIn()) {
                     if(loggedIn()) {
                         // print '<li><a href="edituser.php?id=' . $user["id"] . '"><i class="fa fa-cog"></i> <span data-l10n-id="commonNavbarSettings">Settings</span></a></li>';
                         if($user["admin"] === 1) {
-                            print  '<li><a href="/content/users.php"><i class="fa fa-users"></i> <span data-l10n-id="commonNavbarUsers">Users</span></a></li>';
-                            print  '<li><a href="/content/groups.php"><i class="fa fa-gears"></i> <span data-l10n-id="commonNavbarGroups">Groups</span></a></li>';
+                            echo  '<li><a href="/content/users.php"><i class="fa fa-users"></i> <span data-l10n-id="commonNavbarUsers">Users</span></a></li>';
+                            echo  '<li><a href="/content/groups.php"><i class="fa fa-gears"></i> <span data-l10n-id="commonNavbarGroups">Groups</span></a></li>';
                         }
                     }
                 ?>
                 <li><a href="/content/about.php"><i class="fa fa-question-circle"></i> <span data-l10n-id="commonNavbarAbout">About</span></a></li>
                 <?php
                     if(loggedIn()) {
-                        print '<li><a href="/content/logout.php"><i class="fa fa-sign-in"></i> <span data-l10n-id="commonNavbarLogout">Logout</span></a></li>';
+                        echo '<li><a href="/content/logout.php"><i class="fa fa-sign-in"></i> <span data-l10n-id="commonNavbarLogout">Logout</span></a></li>';
                     } else {
-                        print '<li><a href="/content/login.php"><i class="fa fa-sign-in"></i> <span data-l10n-id="commonNavbarLogin">Login</span></a></li>';
+                        echo '<li><a href="/content/login.php"><i class="fa fa-sign-in"></i> <span data-l10n-id="commonNavbarLogin">Login</span></a></li>';
                     }
                 ?>
             </ul>

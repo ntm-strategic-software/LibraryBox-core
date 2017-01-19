@@ -76,6 +76,15 @@ $j(document).ready(function() {
             var messageId = $(e.currentTarget).attr('dataMessageId');
             var message = $('#' + messageId).text();
             var href = $(e.currentTarget).attr('href');
+            // console.log('href is', href);
+            var splitHref;
+            if (/DL_URL=/.test(href)) {
+                splitHref = href.split('DL_URL=');
+                href = splitHref[splitHref.length - 1];
+            } else if (!/\//.test(href)) {
+                href = window.location.pathname + href;
+            }
+            // console.log('href is', href);
             var splitHREF = href
                 .trim()
                 .split('/')
@@ -92,7 +101,7 @@ $j(document).ready(function() {
                 request.addEventListener('error', function(err) {
                     console.log(err);
                 });
-                request.open('POST', 'delete-file.php?p=' + encodeURIComponent(fullPath));
+                request.open('POST', '/content/delete-file.php?p=' + href);
                 request.send();
 
             }
@@ -103,6 +112,19 @@ $j(document).ready(function() {
         e.preventDefault();
         fileLinkMouseDown = false;
         clearTimeout(fileLinkMouseTimeout);
+    });
+
+    $('#js-fileUploadForm').on('submit', function(e) {
+
+        var text = $('#js-uploadingMessage').text();
+
+        sweetAlert({
+            title: text,
+            html: true,
+            text: '<div style="text-align:center;font-size:30px;"><i class="fa fa-spinner fa-spin"></i></div>',
+            showConfirmButton: false,
+            allowEscapeKey: false
+        });
     });
 
 });
