@@ -329,7 +329,7 @@ if($split_vpath[1] === 'public') {
 $split_vpath = array_slice($split_vpath, 1);
 $vpath = implode($split_vpath, '/');
 print "<h2><span data-l10n-id='filedirIndex'>Index of /</span>" . $vpath . "</h2>
-	<div style='padding-left:10px;'><small>Click to open a file. Press and hold to delete.</small></div>
+	<div style='padding-left:10px;'><small data-l10n-id='filedirClickToOpen'>Click to open a file. Press and hold to delete.</small></div>
 	<div class='list'>
 	<table>";
 
@@ -672,8 +672,8 @@ if ($display_readme)
     </a>
 </div>
 
-<div id="js-confirmFileDeleteMessage" style="display:none">Are you sure that you want to delete this file?</div>
-<div id="js-confirmFolderDeleteMessage" style="display:none">Are you sure that you want to delete this folder?</div>
+<div id="js-confirmFileDeleteMessage" style="display:none" data-l10n-id="filedirConfirmDeleteFile">Are you sure that you want to delete this file?</div>
+<div id="js-confirmFolderDeleteMessage" style="display:none" data-l10n-id="filedirConfirmDeleteFolder">Are you sure that you want to delete this folder?</div>
 
 <?php
 print "<div class='foot'>Scatterbox </div>

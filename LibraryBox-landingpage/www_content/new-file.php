@@ -70,7 +70,7 @@ if($requestMethod === 'POST') {
     $success = move_uploaded_file($_FILES['newfile']['tmp_name'], $new_file_path);
     if(!$success) {
         $status = 1;
-        $err_message = 'There was a problem uploading the file.';
+        $err_message = '<span data-l10n-id="addFileFormError">There was a problem uploading the file.</span>';
     } else {
         redirect('/' . $path);
         die();
@@ -94,17 +94,17 @@ include('header.php');
             <form id="js-fileUploadForm" action="/content/new-file.php?p=<?php echo rawurlencode($path) ?>" method="post" enctype="multipart/form-data">
                 <!--input type="hidden" name="MAX_FILE_SIZE" value="1000M" /!-->
                 <div class="form-group" style="margin-bottom:30px;">
-                    <label style="margin-bottom:15px;">File Upload</label>
+                    <label style="margin-bottom:15px;" data-l10n-id="addFileFormFileUpload">File Upload</label>
                     <input type="file" name="newfile" id="js-fileInput" required />
                 </div>
-                <div id="js-overwriteWarning" class='alert alert-warning' style="display:none;">This file already exists in the current location. If you upload, it will overwrite the current file.</div>
+                <div id="js-overwriteWarning" class='alert alert-warning' style="display:none;" data-l10n-id="addFileFormErrorFileExists">This file already exists in the current location. If you upload, it will overwrite the current file.</div>
                 <div class="form-group">
-                    <button id="js-submitButton" type="submit" class="btn btn-primary"><i class="fa fa-upload"></i> <span>Upload File</span></button>
+                    <button id="js-submitButton" type="submit" class="btn btn-primary"><i class="fa fa-upload"></i> <span data-l10n-id="addFileFormUploadFile">Upload File</span></button>
                 </div>
             </form>
         </div>
     </div>
-    <div id="js-uploadingMessage" style="display:none;">Uploading</div>
+    <div id="js-uploadingMessage" style="display:none;" data-l10n-id="addFileFormUploading">Uploading</div>
 </div>
 
 <?php

@@ -60,7 +60,7 @@ if($requestMethod === 'POST') {
         die();
     } elseif(strlen(trim($_POST['name'])) === 0) {
         $status = 1;
-        $err_message = 'You must enter a folder name.';
+        $err_message = '<span data-l10n-id="addFolderFormErrorName">You must enter a folder name.</span>';
     } else {
         $new_folder_name = trim($_POST['name']);
 		$new_folder_name = preg_replace('/\s/', '_', $new_folder_name);
@@ -68,7 +68,7 @@ if($requestMethod === 'POST') {
         $new_folder_path = $full_path . $new_folder_name;
         if(file_exists($new_folder_path)) {
             $status = 1;
-            $err_message = 'That folder name already exists.';
+            $err_message = '<span data-l10n-id="addFolderFormErrorExists">That folder name already exists.</span>';
         } else {
             mkdir($new_folder_path);
             redirect('/' . $path);
@@ -91,11 +91,11 @@ include('header.php');
         ?>
           <form action="/content/new-folder.php?p=<?php echo rawurlencode($path) ?>" method="post">
             <div class="form-group">
-              <label>New Folder Name</label>
+              <label data-l10n-id="addFolderFormNewFolderName">New Folder Name</label>
               <input type="text" class="form-control" name="name" required autofocus />
             </div>
             <div class="form-group">
-              <button type="submit" class="btn btn-primary"><i class="fa fa-download"></i> <span>Save New Folder</span></button>
+              <button type="submit" class="btn btn-primary"><i class="fa fa-download"></i> <span data-l10n-id="addFolderFormSaveNewFolder">Save New Folder</span></button>
             </div>
           </form>
       </div>
