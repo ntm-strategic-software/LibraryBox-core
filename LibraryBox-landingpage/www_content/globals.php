@@ -317,7 +317,12 @@ function deleteUser($id) {
         $pass = sha1("adminpass");
         fwrite($file, "1234567890,admin,$pass,1,1,021222324252");
     }
+
     fclose($file);
+
+    if($currentUser['id'] === $id) {
+        redirect('/Content/logout.php');
+    }
 
     return true;
 
