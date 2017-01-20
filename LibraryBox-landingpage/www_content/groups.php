@@ -58,11 +58,11 @@ $path = ltrim(rawurldecode($path), '/');
             <form action='/content/groups.php' method='post'>
                 <?php
                     if($status === 1) {
-                        print '<div class="alert alert-danger" data-l10n-id="groupsFomrGroupError">There was a problem updating the group names.</div>';
+                        print '<div class="alert alert-danger" data-l10n-id="groupsFormGroupError">There was a problem updating the group names.</div>';
                     } else if($status === 2) {
                         print '<div class="alert alert-success alert-dismissible">
                             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
-                            <span  data-l10n-id="groupsFomrGroupSuccess">Group names successfully updated.</span>
+                            <span  data-l10n-id="groupsFormGroupSuccess">Group names successfully updated.</span>
                         </div>';
                     }
                     print $name_inputs;

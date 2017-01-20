@@ -48,6 +48,63 @@ if(!isset($GLOBALS['groups'])) {
     $GLOBALS['groups'] = $names;
 }
 
+if(!isset($GLOBALS['public_folders'])) {
+    $folders_json_path = "$content_path/public_folders.json";
+    if(!file_exists($folders_json_path)) {
+
+        $public_folder_names = array(
+            'apps' => array(
+                'name' => 'apps',
+                'custom' => '',
+                'localizationKey' => 'folderApps',
+                'icon' => 'tablet'
+            ),
+            'audio' => array(
+                'name' => 'audio',
+                'custom' => '',
+                'localizationKey' => 'folderAudio',
+                'icon' => 'bullhorn'
+            ),
+            'music' => array(
+                'name' => 'music',
+                'custom' => '',
+                'localizationKey' => 'folderMusic',
+                'icon' => 'music'
+            ),
+            'pictures' => array(
+                'name' => 'pictures',
+                'custom' => '',
+                'localizationKey' => 'folderPictures',
+                'icon' => 'picture-o'
+            ),
+            'text' => array(
+                'name' => 'text',
+                'custom' => '',
+                'localizationKey' => 'folderText',
+                'icon' => 'file-text-o'
+            ),
+            'video' => array(
+                'name' => 'video',
+                'custom' => '',
+                'localizationKey' => 'folderVideo',
+                'icon' => 'video-camera'
+            )
+        );
+        
+        $file=fopen($folders_json_path,"w");
+        fwrite($file, json_encode($public_folder_names));
+        fclose($file);
+    } else {
+    	//print 'file does exist!';
+    }
+    $file_contents_arr = file($folders_json_path);
+    $file_contents = implode($file_contents_arr);
+    // print $file_contents;
+    $file_contents = trim($file_contents);
+    $names = json_decode($file_contents, true);
+    $GLOBALS['public_folders'] = $names;
+}
+
 if(!isset($GLOBALS["users"])) {
     $users_path = "$content_path/users.txt";
     if(!file_exists($users_path)) {
@@ -307,6 +364,32 @@ function saveGroupNames($arr) {
     fwrite($file, $encoded_names);
     fclose($file);
     $GLOBALS['groups'] = $names;
+
+    return true;
+}
+
+function getPublicFolders() {
+    return $GLOBALS['public_folders'];
+}
+
+function savePublicFolderNames($arr) {
+
+    if(count($arr) != 6) {
+        return false;
+    }
+
+    $folders = getPublicFolders();
+    foreach($folders as $name => $custom) {
+        if(isset($arr[$name])) {
+            $folders[$name]['custom'] = cleanStr($arr[$name]);
+        }
+    }
+
+    $encoded_folders = json_encode($folders);
+    $file = fopen("public_folders.json", "w");
+    fwrite($file, $encoded_folders);
+    fclose($file);
+    $GLOBALS['public_folders'] = $folders;
 
     return true;
 }

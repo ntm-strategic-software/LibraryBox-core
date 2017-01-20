@@ -38,6 +38,7 @@ if(loggedIn()) {
                         if($user["admin"] === 1) {
                             echo  '<li><a href="/content/users.php"><i class="fa fa-users"></i> <span data-l10n-id="commonNavbarUsers">Users</span></a></li>';
                             echo  '<li><a href="/content/groups.php"><i class="fa fa-gears"></i> <span data-l10n-id="commonNavbarGroups">Groups</span></a></li>';
+                            echo  '<li><a href="/content/public-folders.php"><i class="fa fa-folder-open"></i> <span data-l10n-id="commonNavbarPublicFolders">Public Folders</span></a></li>';
                         }
                     }
                 ?>
