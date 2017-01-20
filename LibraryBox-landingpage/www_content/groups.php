@@ -34,6 +34,7 @@ for($i = 0; $i < count($names); $i++) {
                 <input class='form-control' type='text' name='group-$i' value=''></input>
             </div>";
     } else {
+        $name = htmlspecialchars($name, ENT_QUOTES);
         $name_inputs = $name_inputs . "<div class='form-group'>
                 <label>$group_label</label>
                 <input class='form-control' type='text' name='group-$i' value='$name'></input>
