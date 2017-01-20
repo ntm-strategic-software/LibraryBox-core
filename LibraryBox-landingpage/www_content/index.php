@@ -58,42 +58,44 @@ if(loggedIn()) { // the user is logged in, so show user files
 
 } else { // the user is not logged in, so show public files
 
-    $public_folders = array(
-        array(
-            'name' => 'apps',
-            'localizationKey' => 'folderApps',
-            'icon' => 'tablet'
-        ),
-        array(
-            'name' => 'audio',
-            'localizationKey' => 'folderAudio',
-            'icon' => 'bullhorn'
-        ),
-        array(
-            'name' => 'music',
-            'localizationKey' => 'folderMusic',
-            'icon' => 'music'
-        ),
-        array(
-            'name' => 'pictures',
-            'localizationKey' => 'folderPictures',
-            'icon' => 'picture-o'
-        ),
-        array(
-            'name' => 'text',
-            'localizationKey' => 'folderText',
-            'icon' => 'file-text-o'
-        ),
-        array(
-            'name' => 'video',
-            'localizationKey' => 'folderVideo',
-            'icon' => 'video-camera'
-        )
-    );
+    $public_folders = getPublicFolders();
+
+    // $public_folders = array(
+    //     array(
+    //         'name' => 'apps',
+    //         'localizationKey' => 'folderApps',
+    //         'icon' => 'tablet'
+    //     ),
+    //     array(
+    //         'name' => 'audio',
+    //         'localizationKey' => 'folderAudio',
+    //         'icon' => 'bullhorn'
+    //     ),
+    //     array(
+    //         'name' => 'music',
+    //         'localizationKey' => 'folderMusic',
+    //         'icon' => 'music'
+    //     ),
+    //     array(
+    //         'name' => 'pictures',
+    //         'localizationKey' => 'folderPictures',
+    //         'icon' => 'picture-o'
+    //     ),
+    //     array(
+    //         'name' => 'text',
+    //         'localizationKey' => 'folderText',
+    //         'icon' => 'file-text-o'
+    //     ),
+    //     array(
+    //         'name' => 'video',
+    //         'localizationKey' => 'folderVideo',
+    //         'icon' => 'video-camera'
+    //     )
+    // );
 
     $folder_names = array();
     foreach($public_folders as $key => $row) {
-        $folder_names[$key] = $row['name'];
+        $folder_names[count($folder_names)] = (strlen($row['custom']) > 0) ? $row['custom'] : $row['name'];
     }
     array_multisort($folder_names, SORT_ASC, $public_folders);
 
@@ -101,9 +103,16 @@ if(loggedIn()) { // the user is logged in, so show user files
         $name = $folder['name'];
         $icon = $folder['icon'];
         $localization_key = $folder['localizationKey'];
-        $table_rows[count($table_rows)] = "
-            <a href='/Shared/public/$name' class='list-group-item' style='font-size:17.5px;line-height:27px;'><span style='display:inline-block;min-width:20px;text-align:center;'><i class='fa fa-$icon'></i></span><span style='padding-left:15px;' data-l10n-id='$localization_key'>$name</span></a>
-        ";
+        if(strlen($folder['custom']) > 0) {
+            $custom = $folder['custom'];
+            $table_rows[count($table_rows)] = "
+                <a href='/Shared/public/$name' class='list-group-item' style='font-size:17.5px;line-height:27px;'><span style='display:inline-block;min-width:20px;text-align:center;'><i class='fa fa-$icon'></i></span><span style='padding-left:15px;'>$custom</span></a>
+            ";
+        } else {
+            $table_rows[count($table_rows)] = "
+                <a href='/Shared/public/$name' class='list-group-item' style='font-size:17.5px;line-height:27px;'><span style='display:inline-block;min-width:20px;text-align:center;'><i class='fa fa-$icon'></i></span><span style='padding-left:15px;' data-l10n-id='$localization_key'>$name</span></a>
+            ";
+        }
     }
 
     $welcome_message = '<p style="font-size: 16.8px;padding-bottom:15px;" data-l10n-id="homePublicMessage">Welcome to Scatterbox! To begin browsing all publicly available files, please select a category below.</p>';
