@@ -309,11 +309,13 @@ function deleteUser($id) {
     $file = fopen("users.txt", "w");
     if(count($newUsers) > 0) {
         foreach($newUsers as $u) {
-            $userStr = $u["id"] . "," . $u["username"] . "," . $u["password"];
+            // $userStr = $u["id"] . "," . $u["username"] . "," . $u["password"];
+            $userStr = $u["id"] . "," . $u["username"] . "," . $u["password"] . "," . $u["admin"] . "," . $u["folders"] . "," . makePermissionStr($u["permissions"]);
             fwrite($file, $userStr . "\n");
         }
     } else {
-        fwrite($file, "1234567890,admin,adminpass");
+        $pass = sha1("adminpass");
+        fwrite($file, "1234567890,admin,$pass,1,1,021222324252");
     }
     fclose($file);
 

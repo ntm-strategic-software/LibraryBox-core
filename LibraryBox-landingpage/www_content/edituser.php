@@ -163,6 +163,11 @@ include("header.php");
                     <button type='submit' class="btn btn-primary"><i class="fa fa-refresh"></i> <span data-l10n-id="editUserSaveChanges">Save Changes</span></button>
                 </div>
             </form>
+            <form style="margin-top: 30px;" action="<?php print "/content/delete-user.php?id=" . $id; ?>" method="post">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> <span data-l10n-id="editUserDeleteUser">Delete User</span></button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

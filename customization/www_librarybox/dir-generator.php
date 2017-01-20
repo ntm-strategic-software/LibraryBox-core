@@ -315,12 +315,21 @@ if ($display_header)
 	}
 }
 
+$public_folders = getPublicFolders();
+
 $split_vpath = explode("/", $vpath);
 if($split_vpath[1] === 'public') {
 	$split_vpath[1] = "<span data-l10n-id='commonPublic'>public</span>";
 	if(isset($split_vpath[2])) {
-		$inner_folder_name = ucfirst($split_vpath[2]);
-		$split_vpath[2] = "<span data-l10n-id='folder$inner_folder_name'></span>";
+		$n = $split_vpath[2];
+		$f = $public_folders[$n];
+		if(strlen($f['custom']) > 0) {
+			$cn = $f['custom'];
+			$split_vpath[2] = "<span>$cn</span>";
+		} else {
+			$inner_folder_name = ucfirst($split_vpath[2]);
+			$split_vpath[2] = "<span data-l10n-id='folder$inner_folder_name'>$inner_folder_name</span>";
+		}
 	}
 } else if(isset($split_vpath[2])) {
 	$split_vpath[1] = "<span data-l10n-id='folderUserFiles'>user-files</span>";
@@ -553,7 +562,12 @@ foreach($folderlist as $folder) {
 	$name;
 	if(loggedIn() && $in_public && $is_top_level) {
 		$inner_folder_name = ucfirst($utf_name);
-		$name = "<span data-l10n-id='folder$inner_folder_name'>$utf_name</span>";
+		$f = $public_folders[$utf_name];
+		if(strlen($f['custom']) > 0) {
+			$name = $f['custom'];
+		} else {
+			$name = "<span data-l10n-id='folder$inner_folder_name'>$utf_name</span>";
+		}
 	} else {
 		$name = $is_top_level ? getGroupName($utf_name) : $utf_name;
 	}
